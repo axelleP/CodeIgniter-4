@@ -29,25 +29,22 @@ use Kint\Object\BasicObject;
 use Kint\Object\Representation\Representation;
 use ReflectionClass;
 
-class ToStringPlugin extends Plugin
-{
+class ToStringPlugin extends Plugin {
+
     public static $blacklist = array(
         'SimpleXMLElement',
         'SplFileObject',
     );
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('object');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         $reflection = new ReflectionClass($var);
         if (!$reflection->hasMethod('__toString')) {
             return;
@@ -64,4 +61,5 @@ class ToStringPlugin extends Plugin
 
         $o->addRepresentation($r);
     }
+
 }

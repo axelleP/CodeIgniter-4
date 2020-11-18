@@ -37,8 +37,8 @@ use Kint\Object\Representation\Representation;
  * way to see inside the DOMNode without print_r, and the only way to see mixed
  * text and node inside XML (SimpleXMLElement will strip out the text).
  */
-class DOMDocumentPlugin extends Plugin
-{
+class DOMDocumentPlugin extends Plugin {
+
     /**
      * List of properties to skip parsing.
      *
@@ -79,18 +79,15 @@ class DOMDocumentPlugin extends Plugin
      */
     public static $verbose = false;
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('object');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (!$o instanceof InstanceObject) {
             return;
         }
@@ -104,8 +101,7 @@ class DOMDocumentPlugin extends Plugin
         }
     }
 
-    protected function parseList(&$var, InstanceObject &$o, $trigger)
-    {
+    protected function parseList(&$var, InstanceObject &$o, $trigger) {
         // Recursion should never happen, should always be stopped at the parent
         // DOMNode.  Depth limit on the other hand we're going to skip since
         // that would show an empty iterator and rather useless. Let the depth
@@ -126,8 +122,8 @@ class DOMDocumentPlugin extends Plugin
         // Make empty iterator representation since we need it in DOMNode to point out depth limits
         if ($this->parser->getDepthLimit() && $o->depth + 1 >= $this->parser->getDepthLimit()) {
             $b = new BasicObject();
-            $b->name = $o->classname.' Iterator Contents';
-            $b->access_path = 'iterator_to_array('.$o->access_path.')';
+            $b->name = $o->classname . ' Iterator Contents';
+            $b->access_path = 'iterator_to_array(' . $o->access_path . ')';
             $b->depth = $o->depth + 1;
             $b->hints[] = 'depth_limit';
 
@@ -150,11 +146,11 @@ class DOMDocumentPlugin extends Plugin
 
             if ($o->access_path) {
                 if ($var instanceof DOMNamedNodeMap) {
-                    $base_obj->access_path = $o->access_path.'->getNamedItem('.\var_export($key, true).')';
+                    $base_obj->access_path = $o->access_path . '->getNamedItem(' . \var_export($key, true) . ')';
                 } elseif ($var instanceof DOMNodeList) {
-                    $base_obj->access_path = $o->access_path.'->item('.\var_export($key, true).')';
+                    $base_obj->access_path = $o->access_path . '->item(' . \var_export($key, true) . ')';
                 } else {
-                    $base_obj->access_path = 'iterator_to_array('.$o->access_path.')';
+                    $base_obj->access_path = 'iterator_to_array(' . $o->access_path . ')';
                 }
             }
 
@@ -162,8 +158,7 @@ class DOMDocumentPlugin extends Plugin
         }
     }
 
-    protected function parseNode(&$var, InstanceObject &$o)
-    {
+    protected function parseNode(&$var, InstanceObject &$o) {
         // Fill the properties
         // They can't be enumerated through reflection or casting,
         // so we have to trust the docs and try them one at a time
@@ -268,8 +263,7 @@ class DOMDocumentPlugin extends Plugin
         }
     }
 
-    protected function parseProperty(InstanceObject $o, $prop, &$var)
-    {
+    protected function parseProperty(InstanceObject $o, $prop, &$var) {
         // Duplicating (And slightly optimizing) the Parser::parseObject() code here
         $base_obj = new BasicObject();
         $base_obj->depth = $o->depth + 1;
@@ -282,9 +276,9 @@ class DOMDocumentPlugin extends Plugin
             $base_obj->access_path = $o->access_path;
 
             if (\preg_match('/^[A-Za-z0-9_]+$/', $base_obj->name)) {
-                $base_obj->access_path .= '->'.$base_obj->name;
+                $base_obj->access_path .= '->' . $base_obj->name;
             } else {
-                $base_obj->access_path .= '->{'.\var_export($base_obj->name, true).'}';
+                $base_obj->access_path .= '->{' . \var_export($base_obj->name, true) . '}';
             }
         }
 
@@ -306,8 +300,7 @@ class DOMDocumentPlugin extends Plugin
         return $base_obj;
     }
 
-    protected static function textualNodeToString(InstanceObject $o)
-    {
+    protected static function textualNodeToString(InstanceObject $o) {
         if (empty($o->value) || empty($o->value->contents) || empty($o->classname)) {
             return;
         }
@@ -325,4 +318,5 @@ class DOMDocumentPlugin extends Plugin
             }
         }
     }
+
 }

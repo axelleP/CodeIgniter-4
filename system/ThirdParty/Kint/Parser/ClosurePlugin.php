@@ -32,20 +32,17 @@ use Kint\Object\ParameterObject;
 use Kint\Object\Representation\Representation;
 use ReflectionFunction;
 
-class ClosurePlugin extends Plugin
-{
-    public function getTypes()
-    {
+class ClosurePlugin extends Plugin {
+
+    public function getTypes() {
         return array('object');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (!$var instanceof Closure) {
             return;
         }
@@ -78,7 +75,7 @@ class ClosurePlugin extends Plugin
             $statics_parsed = array();
 
             foreach ($statics as $name => &$static) {
-                $obj = BasicObject::blank('$'.$name);
+                $obj = BasicObject::blank('$' . $name);
                 $obj->depth = $o->depth + 1;
                 $statics_parsed[$name] = $this->parser->parse($static, $obj);
                 if (null === $statics_parsed[$name]->value) {
@@ -91,4 +88,5 @@ class ClosurePlugin extends Plugin
             $o->addRepresentation($r, 0);
         }
     }
+
 }

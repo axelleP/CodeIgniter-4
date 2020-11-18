@@ -7,12 +7,12 @@
         </tr>
     </thead>
     <tbody>
-    {events}
+        {events}
         <tr>
             <td class="narrow">{ duration } ms</td>
             <td>{event}</td>
             <td>{count}</td>
         </tr>
-    {/events}
+        {/events}
     </tbody>
 </table>

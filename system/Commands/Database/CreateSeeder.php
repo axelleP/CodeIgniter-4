@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -47,100 +48,93 @@ use Config\Services;
  *
  * @package CodeIgniter\Commands
  */
-class CreateSeeder extends BaseCommand
-{
-	/**
-	 * The group the command is lumped under
-	 * when listing commands.
-	 *
-	 * @var string
-	 */
-	protected $group = 'Generators';
+class CreateSeeder extends BaseCommand {
 
-	/**
-	 * The Command's name
-	 *
-	 * @var string
-	 */
-	protected $name = 'make:seeder';
+    /**
+     * The group the command is lumped under
+     * when listing commands.
+     *
+     * @var string
+     */
+    protected $group = 'Generators';
 
-	/**
-	 * the Command's short description
-	 *
-	 * @var string
-	 */
-	protected $description = 'Creates a new seeder file.';
+    /**
+     * The Command's name
+     *
+     * @var string
+     */
+    protected $name = 'make:seeder';
 
-	/**
-	 * the Command's usage
-	 *
-	 * @var string
-	 */
-	protected $usage = 'make:seeder [seeder_name] [options]';
+    /**
+     * the Command's short description
+     *
+     * @var string
+     */
+    protected $description = 'Creates a new seeder file.';
 
-	/**
-	 * the Command's Arguments
-	 *
-	 * @var array
-	 */
-	protected $arguments = [
-		'seeder_name' => 'The seeder file name',
-	];
+    /**
+     * the Command's usage
+     *
+     * @var string
+     */
+    protected $usage = 'make:seeder [seeder_name] [options]';
 
-	/**
-	 * the Command's Options
-	 *
-	 * @var array
-	 */
-	protected $options = [
-		'-n' => 'Set seeder namespace',
-	];
+    /**
+     * the Command's Arguments
+     *
+     * @var array
+     */
+    protected $arguments = [
+        'seeder_name' => 'The seeder file name',
+    ];
 
-	/**
-	 * Creates a new migration file with the current timestamp.
-	 *
-	 * @param array $params
-	 */
-	public function run(array $params = [])
-	{
-		helper('inflector');
-		
-		$name = array_shift($params);
+    /**
+     * the Command's Options
+     *
+     * @var array
+     */
+    protected $options = [
+        '-n' => 'Set seeder namespace',
+    ];
 
-		if (empty($name))
-		{
-			$name = CLI::prompt(lang('Seed.nameFile'), null, 'required');
-		}
+    /**
+     * Creates a new migration file with the current timestamp.
+     *
+     * @param array $params
+     */
+    public function run(array $params = []) {
+        helper('inflector');
 
-		$ns       = $params['-n'] ?? CLI::getOption('n');
-		$homepath = APPPATH;
+        $name = array_shift($params);
 
-		if (! empty($ns))
-		{
-			// Get all namespaces
-			$namespaces = Services::autoloader()->getNamespace();
+        if (empty($name)) {
+            $name = CLI::prompt(lang('Seed.nameFile'), null, 'required');
+        }
 
-			foreach ($namespaces as $namespace => $path)
-			{
-				if ($namespace === $ns)
-				{
-					$homepath = realpath(reset($path)) . DIRECTORY_SEPARATOR;
-					break;
-				}
-			}
-		}
-		else
-		{
-			$ns = defined('APP_NAMESPACE') ? APP_NAMESPACE : 'App';
-		}
+        $ns = $params['-n'] ?? CLI::getOption('n');
+        $homepath = APPPATH;
 
-		// full path
-		$path = $homepath . 'Database/Seeds/' . $name . '.php';
+        if (!empty($ns)) {
+            // Get all namespaces
+            $namespaces = Services::autoloader()->getNamespace();
 
-		// Class name should be pascal case now (camel case with upper first letter)
-		$name = pascalize($name);
+            foreach ($namespaces as $namespace => $path) {
+                if ($namespace === $ns) {
+                    $homepath = realpath(reset($path)) . DIRECTORY_SEPARATOR;
+                    break;
+                }
+            }
+        } else {
+            $ns = defined('APP_NAMESPACE') ? APP_NAMESPACE : 'App';
+        }
 
-		$template = <<<EOD
+        // full path
+        $path = $homepath . 'Database/Seeds/' . $name . '.php';
+
+        // Class name should be pascal case now (camel case with upper first letter)
+        $name = pascalize($name);
+
+        $template = <<<EOD
 <?php namespace $ns\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
@@ -154,16 +148,16 @@ class {name} extends Seeder
 }
 
 EOD;
-		$template = str_replace('{name}', $name, $template);
+        $template = str_replace('{name}', $name, $template);
 
-		helper('filesystem');
-		if (! write_file($path, $template))
-		{
-			CLI::error(lang('Seed.writeError', [$path]));
-			return;
-		}
+        helper('filesystem');
+        if (!write_file($path, $template)) {
+            CLI::error(lang('Seed.writeError', [$path]));
+            return;
+        }
 
-		$ns = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $ns), '\\') . DIRECTORY_SEPARATOR;
-		CLI::write('Created file: ' . CLI::color(str_replace($homepath, $ns, $path), 'green'));
-	}
+        $ns = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $ns), '\\') . DIRECTORY_SEPARATOR;
+        CLI::write('Created file: ' . CLI::color(str_replace($homepath, $ns, $path), 'green'));
+    }
+
 }

@@ -27,8 +27,8 @@ namespace Kint\Object\Representation;
 
 use DateTime;
 
-class MicrotimeRepresentation extends Representation
-{
+class MicrotimeRepresentation extends Representation {
+
     public $seconds;
     public $microseconds;
     public $group;
@@ -42,8 +42,7 @@ class MicrotimeRepresentation extends Representation
     public $mem_peak_real = 0;
     public $hints = array('microtime');
 
-    public function __construct($seconds, $microseconds, $group, $lap = null, $total = null, $i = 0)
-    {
+    public function __construct($seconds, $microseconds, $group, $lap = null, $total = null, $i = 0) {
         parent::__construct('Microtime');
 
         $this->seconds = (int) $seconds;
@@ -64,8 +63,8 @@ class MicrotimeRepresentation extends Representation
         $this->mem_peak_real = \memory_get_peak_usage(true);
     }
 
-    public function getDateTime()
-    {
-        return DateTime::createFromFormat('U u', $this->seconds.' '.\str_pad($this->microseconds, 6, '0', STR_PAD_LEFT));
+    public function getDateTime() {
+        return DateTime::createFromFormat('U u', $this->seconds . ' ' . \str_pad($this->microseconds, 6, '0', STR_PAD_LEFT));
     }
+
 }

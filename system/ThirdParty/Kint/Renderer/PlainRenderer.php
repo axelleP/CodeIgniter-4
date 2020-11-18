@@ -29,8 +29,8 @@ use Kint\Kint;
 use Kint\Object\BasicObject;
 use Kint\Object\BlobObject;
 
-class PlainRenderer extends TextRenderer
-{
+class PlainRenderer extends TextRenderer {
+
     public static $pre_render_sources = array(
         'script' => array(
             array('Kint\\Renderer\\PlainRenderer', 'renderJs'),
@@ -55,16 +55,12 @@ class PlainRenderer extends TextRenderer
      * @var bool
      */
     public static $disable_utf8 = false;
-
     public static $needs_pre_render = true;
-
     public static $always_pre_render = false;
-
     protected $force_pre_render = false;
     protected $pre_render;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->pre_render = self::$needs_pre_render;
@@ -74,8 +70,7 @@ class PlainRenderer extends TextRenderer
         }
     }
 
-    public function setCallInfo(array $info)
-    {
+    public function setCallInfo(array $info) {
         parent::setCallInfo($info);
 
         if (\in_array('@', $this->call_info['modifiers'], true)) {
@@ -83,8 +78,7 @@ class PlainRenderer extends TextRenderer
         }
     }
 
-    public function setStatics(array $statics)
-    {
+    public function setStatics(array $statics) {
         parent::setStatics($statics);
 
         if (!empty($statics['return'])) {
@@ -92,34 +86,28 @@ class PlainRenderer extends TextRenderer
         }
     }
 
-    public function setPreRender($pre_render)
-    {
+    public function setPreRender($pre_render) {
         $this->pre_render = $pre_render;
         $this->force_pre_render = true;
     }
 
-    public function getPreRender()
-    {
+    public function getPreRender() {
         return $this->pre_render;
     }
 
-    public function colorValue($string)
-    {
-        return '<i>'.$string.'</i>';
+    public function colorValue($string) {
+        return '<i>' . $string . '</i>';
     }
 
-    public function colorType($string)
-    {
-        return '<b>'.$string.'</b>';
+    public function colorType($string) {
+        return '<b>' . $string . '</b>';
     }
 
-    public function colorTitle($string)
-    {
-        return '<u>'.$string.'</u>';
+    public function colorTitle($string) {
+        return '<u>' . $string . '</u>';
     }
 
-    public function renderTitle(BasicObject $o)
-    {
+    public function renderTitle(BasicObject $o) {
         if (self::$disable_utf8) {
             return $this->utf8ToHtmlentity(parent::renderTitle($o));
         }
@@ -127,8 +115,7 @@ class PlainRenderer extends TextRenderer
         return parent::renderTitle($o);
     }
 
-    public function preRender()
-    {
+    public function preRender() {
         $output = '';
 
         if ($this->pre_render) {
@@ -144,10 +131,10 @@ class PlainRenderer extends TextRenderer
 
                 switch ($type) {
                     case 'script':
-                        $output .= '<script class="kint-plain-script">'.$contents.'</script>';
+                        $output .= '<script class="kint-plain-script">' . $contents . '</script>';
                         break;
                     case 'style':
-                        $output .= '<style class="kint-plain-style">'.$contents.'</style>';
+                        $output .= '<style class="kint-plain-style">' . $contents . '</style>';
                         break;
                     default:
                         $output .= $contents;
@@ -160,21 +147,19 @@ class PlainRenderer extends TextRenderer
             }
         }
 
-        return $output.'<div class="kint-plain">';
+        return $output . '<div class="kint-plain">';
     }
 
-    public function postRender()
-    {
+    public function postRender() {
         if (self::$disable_utf8) {
-            return $this->utf8ToHtmlentity(parent::postRender()).'</div>';
+            return $this->utf8ToHtmlentity(parent::postRender()) . '</div>';
         }
 
-        return parent::postRender().'</div>';
+        return parent::postRender() . '</div>';
     }
 
-    public function ideLink($file, $line)
-    {
-        $path = $this->escape(Kint::shortenPath($file)).':'.$line;
+    public function ideLink($file, $line) {
+        $path = $this->escape(Kint::shortenPath($file)) . ':' . $line;
         $ideLink = Kint::getIdeLink($file, $line);
 
         if (!$ideLink) {
@@ -187,11 +172,10 @@ class PlainRenderer extends TextRenderer
             $class = 'class="kint-ide-link" ';
         }
 
-        return '<a '.$class.'href="'.$this->escape($ideLink).'">'.$path.'</a>';
+        return '<a ' . $class . 'href="' . $this->escape($ideLink) . '">' . $path . '</a>';
     }
 
-    public function escape($string, $encoding = false)
-    {
+    public function escape($string, $encoding = false) {
         if (false === $encoding) {
             $encoding = BlobObject::detectEncoding($string);
         }
@@ -212,26 +196,22 @@ class PlainRenderer extends TextRenderer
         return $string;
     }
 
-    protected function utf8ToHtmlentity($string)
-    {
+    protected function utf8ToHtmlentity($string) {
         return \str_replace(
-            array('┌', '═', '┐', '│', '└', '─', '┘'),
-            array('&#9484;', '&#9552;', '&#9488;', '&#9474;', '&#9492;', '&#9472;', '&#9496;'),
-            $string
+                array('┌', '═', '┐', '│', '└', '─', '┘'), array('&#9484;', '&#9552;', '&#9488;', '&#9474;', '&#9492;', '&#9472;', '&#9496;'), $string
         );
     }
 
-    protected static function renderJs()
-    {
-        return \file_get_contents(KINT_DIR.'/resources/compiled/shared.js').\file_get_contents(KINT_DIR.'/resources/compiled/plain.js');
+    protected static function renderJs() {
+        return \file_get_contents(KINT_DIR . '/resources/compiled/shared.js') . \file_get_contents(KINT_DIR . '/resources/compiled/plain.js');
     }
 
-    protected static function renderCss()
-    {
-        if (\file_exists(KINT_DIR.'/resources/compiled/'.self::$theme)) {
-            return \file_get_contents(KINT_DIR.'/resources/compiled/'.self::$theme);
+    protected static function renderCss() {
+        if (\file_exists(KINT_DIR . '/resources/compiled/' . self::$theme)) {
+            return \file_get_contents(KINT_DIR . '/resources/compiled/' . self::$theme);
         }
 
         return \file_get_contents(self::$theme);
     }
+
 }

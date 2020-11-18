@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -46,30 +47,31 @@ namespace CodeIgniter\Test;
  *
  * @package CodeIgniter\Test
  */
-class FeatureTestCase extends CIDatabaseTestCase
-{
-	use FeatureTestTrait;
+class FeatureTestCase extends CIDatabaseTestCase {
 
-	/**
-	 * If present, will override application
-	 * routes when using call().
-	 *
-	 * @var \CodeIgniter\Router\RouteCollection
-	 */
-	protected $routes;
+    use FeatureTestTrait;
 
-	/**
-	 * Values to be set in the SESSION global
-	 * before running the test.
-	 *
-	 * @var array
-	 */
-	protected $session = [];
+    /**
+     * If present, will override application
+     * routes when using call().
+     *
+     * @var \CodeIgniter\Router\RouteCollection
+     */
+    protected $routes;
 
-	/**
-	 * Enabled auto clean op buffer after request call
-	 *
-	 * @var boolean
-	 */
-	protected $clean = true;
+    /**
+     * Values to be set in the SESSION global
+     * before running the test.
+     *
+     * @var array
+     */
+    protected $session = [];
+
+    /**
+     * Enabled auto clean op buffer after request call
+     *
+     * @var boolean
+     */
+    protected $clean = true;
+
 }

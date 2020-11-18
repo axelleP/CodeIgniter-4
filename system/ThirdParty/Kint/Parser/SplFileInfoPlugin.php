@@ -30,20 +30,17 @@ use Kint\Object\Representation\SplFileInfoRepresentation;
 use SplFileInfo;
 use SplFileObject;
 
-class SplFileInfoPlugin extends Plugin
-{
-    public function getTypes()
-    {
+class SplFileInfoPlugin extends Plugin {
+
+    public function getTypes() {
         return array('object');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_COMPLETE;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (!$var instanceof SplFileInfo || $var instanceof SplFileObject) {
             return;
         }
@@ -52,4 +49,5 @@ class SplFileInfoPlugin extends Plugin
         $o->addRepresentation($r, 0);
         $o->size = $r->getSize();
     }
+
 }

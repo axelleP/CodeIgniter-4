@@ -30,13 +30,12 @@ use Kint\Object\Representation\SourceRepresentation;
 use ReflectionFunction;
 use ReflectionMethod;
 
-class TraceFrameObject extends BasicObject
-{
+class TraceFrameObject extends BasicObject {
+
     public $trace;
     public $hints = array('trace_frame');
 
-    public function __construct(BasicObject $base, array $raw_frame)
-    {
+    public function __construct(BasicObject $base, array $raw_frame) {
         parent::__construct();
 
         $this->transplant($base);
@@ -92,9 +91,10 @@ class TraceFrameObject extends BasicObject
 
         if ($this->trace['object']) {
             $callee = new Representation('object');
-            $callee->label = 'Callee object ['.$this->trace['object']->classname.']';
+            $callee->label = 'Callee object [' . $this->trace['object']->classname . ']';
             $callee->contents[] = $this->trace['object'];
             $this->addRepresentation($callee);
         }
     }
+
 }

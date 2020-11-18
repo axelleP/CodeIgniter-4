@@ -49,73 +49,70 @@ use CodeIgniter\CLI\BaseCommand;
  *
  * @package CodeIgniter\Commands
  */
-class Help extends BaseCommand
-{
+class Help extends BaseCommand {
 
-	/**
-	 * The group the command is lumped under
-	 * when listing commands.
-	 *
-	 * @var string
-	 */
-	protected $group = 'CodeIgniter';
+    /**
+     * The group the command is lumped under
+     * when listing commands.
+     *
+     * @var string
+     */
+    protected $group = 'CodeIgniter';
 
-	/**
-	 * The Command's name
-	 *
-	 * @var string
-	 */
-	protected $name = 'help';
+    /**
+     * The Command's name
+     *
+     * @var string
+     */
+    protected $name = 'help';
 
-	/**
-	 * the Command's short description
-	 *
-	 * @var string
-	 */
-	protected $description = 'Displays basic usage information.';
+    /**
+     * the Command's short description
+     *
+     * @var string
+     */
+    protected $description = 'Displays basic usage information.';
 
-	/**
-	 * the Command's usage
-	 *
-	 * @var string
-	 */
-	protected $usage = 'help command_name';
+    /**
+     * the Command's usage
+     *
+     * @var string
+     */
+    protected $usage = 'help command_name';
 
-	/**
-	 * the Command's Arguments
-	 *
-	 * @var array
-	 */
-	protected $arguments = [
-		'command_name' => 'The command name [default: "help"]',
-	];
+    /**
+     * the Command's Arguments
+     *
+     * @var array
+     */
+    protected $arguments = [
+        'command_name' => 'The command name [default: "help"]',
+    ];
 
-	/**
-	 * the Command's Options
-	 *
-	 * @var array
-	 */
-	protected $options = [];
+    /**
+     * the Command's Options
+     *
+     * @var array
+     */
+    protected $options = [];
 
-	//--------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
-	/**
-	 * Displays the help for the spark cli script itself.
-	 *
-	 * @param array $params
-	 */
-	public function run(array $params)
-	{
-		$command = array_shift($params);
-		if (is_null($command))
-		{
-			$command = 'help';
-		}
+    /**
+     * Displays the help for the spark cli script itself.
+     *
+     * @param array $params
+     */
+    public function run(array $params) {
+        $command = array_shift($params);
+        if (is_null($command)) {
+            $command = 'help';
+        }
 
-		$commands = $this->commands->getCommands();
-		$class    = new $commands[$command]['class']($this->logger, $this->commands);
+        $commands = $this->commands->getCommands();
+        $class = new $commands[$command]['class']($this->logger, $this->commands);
 
-		$class->showHelp();
-	}
+        $class->showHelp();
+    }
 
 }

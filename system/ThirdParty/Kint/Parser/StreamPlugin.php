@@ -30,20 +30,17 @@ use Kint\Object\Representation\Representation;
 use Kint\Object\ResourceObject;
 use Kint\Object\StreamObject;
 
-class StreamPlugin extends Plugin
-{
-    public function getTypes()
-    {
+class StreamPlugin extends Plugin {
+
+    public function getTypes() {
         return array('resource');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (!$o instanceof ResourceObject || 'stream' !== $o->resource_type) {
             return;
         }
@@ -59,7 +56,7 @@ class StreamPlugin extends Plugin
         $base_obj->depth = $o->depth;
 
         if ($o->access_path) {
-            $base_obj->access_path = 'stream_get_meta_data('.$o->access_path.')';
+            $base_obj->access_path = 'stream_get_meta_data(' . $o->access_path . ')';
         }
 
         $rep->contents = $this->parser->parse($meta, $base_obj);
@@ -75,4 +72,5 @@ class StreamPlugin extends Plugin
         $stream->transplant($o);
         $o = $stream;
     }
+
 }

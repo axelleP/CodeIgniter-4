@@ -25,16 +25,15 @@
 
 namespace Kint\Object\Representation;
 
-class SourceRepresentation extends Representation
-{
+class SourceRepresentation extends Representation {
+
     public $hints = array('source');
     public $source = array();
     public $filename;
     public $line = 0;
     public $showfilename = false;
 
-    public function __construct($filename, $line, $padding = 7)
-    {
+    public function __construct($filename, $line, $padding = 7) {
         parent::__construct('Source');
 
         $this->filename = $filename;
@@ -57,8 +56,7 @@ class SourceRepresentation extends Representation
      *
      * @return null|array
      */
-    public static function getSource($filename, $start_line = 1, $length = null)
-    {
+    public static function getSource($filename, $start_line = 1, $length = null) {
         if (!$filename || !\file_exists($filename) || !\is_readable($filename)) {
             return null;
         }
@@ -69,4 +67,5 @@ class SourceRepresentation extends Representation
 
         return $source;
     }
+
 }

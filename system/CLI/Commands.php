@@ -49,133 +49,120 @@ use Config\Services;
  *
  * @package CodeIgniter\CLI
  */
-class Commands
-{
-	/**
-	 * The found commands.
-	 *
-	 * @var array
-	 */
-	protected $commands = [];
+class Commands {
 
-	/**
-	 * Logger instance.
-	 *
-	 * @var Logger
-	 */
-	protected $logger;
+    /**
+     * The found commands.
+     *
+     * @var array
+     */
+    protected $commands = [];
 
-	/**
-	 * Constructor
-	 *
-	 * @param \CodeIgniter\Log\Logger|null $logger
-	 */
-	public function __construct($logger = null)
-	{
-		$this->logger = $logger ?? service('logger');
-	}
+    /**
+     * Logger instance.
+     *
+     * @var Logger
+     */
+    protected $logger;
 
-	/**
-	 * Runs a command given
-	 *
-	 * @param string $command
-	 * @param array  $params
-	 */
-	public function run(string $command, array $params)
-	{
-		$this->discoverCommands();
+    /**
+     * Constructor
+     *
+     * @param \CodeIgniter\Log\Logger|null $logger
+     */
+    public function __construct($logger = null) {
+        $this->logger = $logger ?? service('logger');
+    }
 
-		if (! isset($this->commands[$command]))
-		{
-			CLI::error(lang('CLI.commandNotFound', [$command]));
-			CLI::newLine();
-			return;
-		}
+    /**
+     * Runs a command given
+     *
+     * @param string $command
+     * @param array  $params
+     */
+    public function run(string $command, array $params) {
+        $this->discoverCommands();
 
-		// The file would have already been loaded during the
-		// createCommandList function...
-		$className = $this->commands[$command]['class'];
-		$class     = new $className($this->logger, $this);
+        if (!isset($this->commands[$command])) {
+            CLI::error(lang('CLI.commandNotFound', [$command]));
+            CLI::newLine();
+            return;
+        }
 
-		return $class->run($params);
-	}
+        // The file would have already been loaded during the
+        // createCommandList function...
+        $className = $this->commands[$command]['class'];
+        $class = new $className($this->logger, $this);
 
-	/**
-	 * Provide access to the list of commands.
-	 *
-	 * @return array
-	 */
-	public function getCommands()
-	{
-		$this->discoverCommands();
+        return $class->run($params);
+    }
 
-		return $this->commands;
-	}
+    /**
+     * Provide access to the list of commands.
+     *
+     * @return array
+     */
+    public function getCommands() {
+        $this->discoverCommands();
 
-	/**
-	 * Discovers all commands in the framework and within user code,
-	 * and collects instances of them to work with.
-	 */
-	public function discoverCommands()
-	{
-		if (! empty($this->commands))
-		{
-			return;
-		}
+        return $this->commands;
+    }
 
-		$files = service('locator')->listFiles('Commands/');
+    /**
+     * Discovers all commands in the framework and within user code,
+     * and collects instances of them to work with.
+     */
+    public function discoverCommands() {
+        if (!empty($this->commands)) {
+            return;
+        }
 
-		// If no matching command files were found, bail
-		if (empty($files))
-		{
-			// This should never happen in unit testing.
-			// if it does, we have far bigger problems!
-			// @codeCoverageIgnoreStart
-			return;
-			// @codeCoverageIgnoreEnd
-		}
+        $files = service('locator')->listFiles('Commands/');
 
-		// Loop over each file checking to see if a command with that
-		// alias exists in the class. If so, return it. Otherwise, try the next.
-		foreach ($files as $file)
-		{
-			$className = Services::locator()->findQualifiedNameFromPath($file);
-			if (empty($className) || ! class_exists($className))
-			{
-				continue;
-			}
+        // If no matching command files were found, bail
+        if (empty($files)) {
+            // This should never happen in unit testing.
+            // if it does, we have far bigger problems!
+            // @codeCoverageIgnoreStart
+            return;
+            // @codeCoverageIgnoreEnd
+        }
 
-			try
-			{
-				$class = new \ReflectionClass($className);
+        // Loop over each file checking to see if a command with that
+        // alias exists in the class. If so, return it. Otherwise, try the next.
+        foreach ($files as $file) {
+            $className = Services::locator()->findQualifiedNameFromPath($file);
+            if (empty($className) || !class_exists($className)) {
+                continue;
+            }
 
-				if (! $class->isInstantiable() || ! $class->isSubclassOf(BaseCommand::class))
-				{
-					continue;
-				}
+            try {
+                $class = new \ReflectionClass($className);
 
-				$class = new $className($this->logger, $this);
+                if (!$class->isInstantiable() || !$class->isSubclassOf(BaseCommand::class)) {
+                    continue;
+                }
 
-				// Store it!
-				if ($class->group !== null)
-				{
-					$this->commands[$class->name] = [
-						'class'       => $className,
-						'file'        => $file,
-						'group'       => $class->group,
-						'description' => $class->description,
-					];
-				}
+                $class = new $className($this->logger, $this);
 
-				$class = null;
-				unset($class);
-			}
-			catch (\ReflectionException $e)
-			{
-				$this->logger->error($e->getMessage());
-			}
-		}
+                // Store it!
+                if ($class->group !== null) {
+                    $this->commands[$class->name] = [
+                        'class' => $className,
+                        'file' => $file,
+                        'group' => $class->group,
+                        'description' => $class->description,
+                    ];
+                }
 
-		asort($this->commands);
-	}
+                $class = null;
+                unset($class);
+            } catch (\ReflectionException $e) {
+                $this->logger->error($e->getMessage());
+            }
+        }
+
+        asort($this->commands);
+    }
+
 }

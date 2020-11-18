@@ -28,8 +28,8 @@ namespace Kint\Parser;
 use Kint\Object\BasicObject;
 use Kint\Object\Representation\Representation;
 
-class Base64Plugin extends Plugin
-{
+class Base64Plugin extends Plugin {
+
     /**
      * The minimum length before a string will be considered for base64 decoding.
      *
@@ -44,18 +44,15 @@ class Base64Plugin extends Plugin
      */
     public static $min_length_soft = 50;
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('string');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (\strlen($var) < self::$min_length_hard || \strlen($var) % 4) {
             return;
         }
@@ -77,10 +74,10 @@ class Base64Plugin extends Plugin
 
         $base_obj = new BasicObject();
         $base_obj->depth = $o->depth + 1;
-        $base_obj->name = 'base64_decode('.$o->name.')';
+        $base_obj->name = 'base64_decode(' . $o->name . ')';
 
         if ($o->access_path) {
-            $base_obj->access_path = 'base64_decode('.$o->access_path.')';
+            $base_obj->access_path = 'base64_decode(' . $o->access_path . ')';
         }
 
         $r = new Representation('Base64');
@@ -92,4 +89,5 @@ class Base64Plugin extends Plugin
             $o->addRepresentation($r);
         }
     }
+
 }

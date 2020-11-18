@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -41,47 +42,44 @@ namespace CodeIgniter\Cache\Exceptions;
 /**
  * CacheException
  */
-class CacheException extends \RuntimeException implements ExceptionInterface
-{
-	/**
-	 * Thrown when handler has no permission to write cache.
-	 *
-	 * @param string $path
-	 *
-	 * @return \CodeIgniter\Cache\Exceptions\CacheException
-	 */
-	public static function forUnableToWrite(string $path)
-	{
-		return new static(lang('Cache.unableToWrite', [$path]));
-	}
+class CacheException extends \RuntimeException implements ExceptionInterface {
 
-	/**
-	 * Thrown when an unrecognized handler is used.
-	 *
-	 * @return \CodeIgniter\Cache\Exceptions\CacheException
-	 */
-	public static function forInvalidHandlers()
-	{
-		return new static(lang('Cache.invalidHandlers'));
-	}
+    /**
+     * Thrown when handler has no permission to write cache.
+     *
+     * @param string $path
+     *
+     * @return \CodeIgniter\Cache\Exceptions\CacheException
+     */
+    public static function forUnableToWrite(string $path) {
+        return new static(lang('Cache.unableToWrite', [$path]));
+    }
 
-	/**
-	 * Thrown when no backup handler is setup in config.
-	 *
-	 * @return \CodeIgniter\Cache\Exceptions\CacheException
-	 */
-	public static function forNoBackup()
-	{
-		return new static(lang('Cache.noBackup'));
-	}
+    /**
+     * Thrown when an unrecognized handler is used.
+     *
+     * @return \CodeIgniter\Cache\Exceptions\CacheException
+     */
+    public static function forInvalidHandlers() {
+        return new static(lang('Cache.invalidHandlers'));
+    }
 
-	/**
-	 * Thrown when specified handler was not found.
-	 *
-	 * @return \CodeIgniter\Cache\Exceptions\CacheException
-	 */
-	public static function forHandlerNotFound()
-	{
-		return new static(lang('Cache.handlerNotFound'));
-	}
+    /**
+     * Thrown when no backup handler is setup in config.
+     *
+     * @return \CodeIgniter\Cache\Exceptions\CacheException
+     */
+    public static function forNoBackup() {
+        return new static(lang('Cache.noBackup'));
+    }
+
+    /**
+     * Thrown when specified handler was not found.
+     *
+     * @return \CodeIgniter\Cache\Exceptions\CacheException
+     */
+    public static function forHandlerNotFound() {
+        return new static(lang('Cache.handlerNotFound'));
+    }
+
 }

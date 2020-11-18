@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RESTful language strings.
  *
@@ -12,7 +13,6 @@
  *
  * @codeCoverageIgnore
  */
-
 return [
-   'notImplemented' => '"{0}" action not implemented.',
+    'notImplemented' => '"{0}" action not implemented.',
 ];

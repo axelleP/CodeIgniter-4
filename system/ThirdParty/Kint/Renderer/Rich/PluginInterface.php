@@ -27,7 +27,7 @@ namespace Kint\Renderer\Rich;
 
 use Kint\Renderer\RichRenderer;
 
-interface PluginInterface
-{
+interface PluginInterface {
+
     public function __construct(RichRenderer $r);
 }

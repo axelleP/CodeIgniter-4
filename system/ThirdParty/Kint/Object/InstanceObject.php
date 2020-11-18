@@ -25,8 +25,8 @@
 
 namespace Kint\Object;
 
-class InstanceObject extends BasicObject
-{
+class InstanceObject extends BasicObject {
+
     public $type = 'object';
     public $classname;
     public $hash;
@@ -34,13 +34,11 @@ class InstanceObject extends BasicObject
     public $startline;
     public $hints = array('object');
 
-    public function getType()
-    {
+    public function getType() {
         return $this->classname;
     }
 
-    public function transplant(BasicObject $old)
-    {
+    public function transplant(BasicObject $old) {
         parent::transplant($old);
 
         if ($old instanceof self) {
@@ -51,8 +49,7 @@ class InstanceObject extends BasicObject
         }
     }
 
-    public static function sortByHierarchy($a, $b)
-    {
+    public static function sortByHierarchy($a, $b) {
         if (\is_string($a) && \is_string($b)) {
             $aclass = $a;
             $bclass = $b;
@@ -75,4 +72,5 @@ class InstanceObject extends BasicObject
 
         return 0;
     }
+
 }

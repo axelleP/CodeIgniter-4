@@ -1,12 +1,11 @@
-<?php namespace App\Controllers;
+<?php
 
-class Home extends BaseController
-{
-	public function index()
-	{
-		return view('welcome_message');
-	}
+namespace App\Controllers;
 
-	//--------------------------------------------------------------------
+class Home extends BaseController {
+
+    public function index() {
+        return view('articles/list');
+    }
 
 }

@@ -31,22 +31,19 @@ use Kint\Object\Representation\Representation;
 use ReflectionClass;
 use ReflectionProperty;
 
-class ClassStaticsPlugin extends Plugin
-{
+class ClassStaticsPlugin extends Plugin {
+
     private static $cache = array();
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('object');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         $class = \get_class($var);
         $reflection = new ReflectionClass($class);
 
@@ -56,7 +53,7 @@ class ClassStaticsPlugin extends Plugin
             $consts = array();
 
             foreach ($reflection->getConstants() as $name => $val) {
-                $const = BasicObject::blank($name, '\\'.$class.'::'.$name);
+                $const = BasicObject::blank($name, '\\' . $class . '::' . $name);
                 $const->const = true;
                 $const->depth = $o->depth + 1;
                 $const->owner_class = $class;
@@ -74,7 +71,7 @@ class ClassStaticsPlugin extends Plugin
 
         foreach ($reflection->getProperties(ReflectionProperty::IS_STATIC) as $static) {
             $prop = new BasicObject();
-            $prop->name = '$'.$static->getName();
+            $prop->name = '$' . $static->getName();
             $prop->depth = $o->depth + 1;
             $prop->static = true;
             $prop->operator = BasicObject::OPERATOR_STATIC;
@@ -88,7 +85,7 @@ class ClassStaticsPlugin extends Plugin
             }
 
             if ($this->parser->childHasPath($o, $prop)) {
-                $prop->access_path = '\\'.$prop->owner_class.'::'.$prop->name;
+                $prop->access_path = '\\' . $prop->owner_class . '::' . $prop->name;
             }
 
             $static->setAccessible(true);
@@ -105,8 +102,7 @@ class ClassStaticsPlugin extends Plugin
         $o->addRepresentation($statics);
     }
 
-    private static function sort(BasicObject $a, BasicObject $b)
-    {
+    private static function sort(BasicObject $a, BasicObject $b) {
         $sort = ((int) $a->const) - ((int) $b->const);
         if ($sort) {
             return $sort;
@@ -119,4 +115,5 @@ class ClassStaticsPlugin extends Plugin
 
         return InstanceObject::sortByHierarchy($a->owner_class, $b->owner_class);
     }
+
 }

@@ -25,8 +25,8 @@
 
 namespace Kint\Object;
 
-class BlobObject extends BasicObject
-{
+class BlobObject extends BasicObject {
+
     /**
      * @var array Character encodings to detect
      *
@@ -75,33 +75,29 @@ class BlobObject extends BasicObject
      * This depends on the iconv extension
      */
     public static $legacy_encodings = array();
-
     public $type = 'string';
     public $encoding = false;
     public $hints = array('string');
 
-    public function getType()
-    {
+    public function getType() {
         if (false === $this->encoding) {
-            return 'binary '.$this->type;
+            return 'binary ' . $this->type;
         }
 
         if ('ASCII' === $this->encoding) {
             return $this->type;
         }
 
-        return $this->encoding.' '.$this->type;
+        return $this->encoding . ' ' . $this->type;
     }
 
-    public function getValueShort()
-    {
+    public function getValueShort() {
         if ($rep = $this->value) {
-            return '"'.$rep->contents.'"';
+            return '"' . $rep->contents . '"';
         }
     }
 
-    public function transplant(BasicObject $old)
-    {
+    public function transplant(BasicObject $old) {
         parent::transplant($old);
 
         if ($old instanceof self) {
@@ -109,8 +105,7 @@ class BlobObject extends BasicObject
         }
     }
 
-    public static function strlen($string, $encoding = false)
-    {
+    public static function strlen($string, $encoding = false) {
         if (\function_exists('mb_strlen')) {
             if (false === $encoding) {
                 $encoding = self::detectEncoding($string);
@@ -124,8 +119,7 @@ class BlobObject extends BasicObject
         return \strlen($string);
     }
 
-    public static function substr($string, $start, $length = null, $encoding = false)
-    {
+    public static function substr($string, $start, $length = null, $encoding = false) {
         if (\function_exists('mb_substr')) {
             if (false === $encoding) {
                 $encoding = self::detectEncoding($string);
@@ -144,8 +138,7 @@ class BlobObject extends BasicObject
         return \substr($string, $start, isset($length) ? $length : PHP_INT_MAX);
     }
 
-    public static function detectEncoding($string)
-    {
+    public static function detectEncoding($string) {
         if (\function_exists('mb_detect_encoding')) {
             if ($ret = \mb_detect_encoding($string, self::$char_encodings, true)) {
                 return $ret;
@@ -174,4 +167,5 @@ class BlobObject extends BasicObject
 
         return false;
     }
+
 }

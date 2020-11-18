@@ -33,13 +33,13 @@ use ReflectionType;
 /**
  * A collection of utility methods. Should all be static methods with no dependencies.
  */
-final class Utils
-{
+final class Utils {
+
     /**
      * @codeCoverageIgnore
      */
-    private function __construct()
-    {
+    private function __construct() {
+
     }
 
     /**
@@ -49,8 +49,7 @@ final class Utils
      *
      * @return array Human readable value and unit
      */
-    public static function getHumanReadableBytes($value)
-    {
+    public static function getHumanReadableBytes($value) {
         static $unit = array('B', 'KB', 'MB', 'GB', 'TB');
 
         $i = \floor(\log($value, 1024));
@@ -62,13 +61,11 @@ final class Utils
         );
     }
 
-    public static function isSequential(array $array)
-    {
+    public static function isSequential(array $array) {
         return \array_keys($array) === \range(0, \count($array) - 1);
     }
 
-    public static function composerGetExtras($key = 'kint')
-    {
+    public static function composerGetExtras($key = 'kint') {
         $extras = array();
 
         if (0 === \strpos(KINT_DIR, 'phar://')) {
@@ -76,10 +73,10 @@ final class Utils
             return $extras; // @codeCoverageIgnore
         }
 
-        $folder = KINT_DIR.'/vendor';
+        $folder = KINT_DIR . '/vendor';
 
         for ($i = 0; $i < 4; ++$i) {
-            $installed = $folder.'/composer/installed.json';
+            $installed = $folder . '/composer/installed.json';
 
             if (\file_exists($installed) && \is_readable($installed)) {
                 $packages = \json_decode(\file_get_contents($installed), true);
@@ -92,8 +89,8 @@ final class Utils
 
                 $folder = \dirname($folder);
 
-                if (\file_exists($folder.'/composer.json') && \is_readable($folder.'/composer.json')) {
-                    $composer = \json_decode(\file_get_contents($folder.'/composer.json'), true);
+                if (\file_exists($folder . '/composer.json') && \is_readable($folder . '/composer.json')) {
+                    $composer = \json_decode(\file_get_contents($folder . '/composer.json'), true);
 
                     if (isset($composer['extra'][$key]) && \is_array($composer['extra'][$key])) {
                         $extras = \array_replace($extras, $composer['extra'][$key]);
@@ -112,8 +109,7 @@ final class Utils
     /**
      * @codeCoverageIgnore
      */
-    public static function composerSkipFlags()
-    {
+    public static function composerSkipFlags() {
         $extras = self::composerGetExtras();
 
         if (!empty($extras['disable-facade']) && !\defined('KINT_SKIP_FACADE')) {
@@ -125,8 +121,7 @@ final class Utils
         }
     }
 
-    public static function isTrace(array $trace)
-    {
+    public static function isTrace(array $trace) {
         if (!self::isSequential($trace)) {
             return false;
         }
@@ -166,8 +161,7 @@ final class Utils
         return $file_found;
     }
 
-    public static function traceFrameIsListed(array $frame, array $matches)
-    {
+    public static function traceFrameIsListed(array $frame, array $matches) {
         if (isset($frame['class'])) {
             $called = array(\strtolower($frame['class']), \strtolower($frame['function']));
         } else {
@@ -177,8 +171,7 @@ final class Utils
         return \in_array($called, $matches, true);
     }
 
-    public static function normalizeAliases(array &$aliases)
-    {
+    public static function normalizeAliases(array &$aliases) {
         static $name_regex = '[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*';
 
         foreach ($aliases as $index => &$alias) {
@@ -186,8 +179,8 @@ final class Utils
                 $alias = \array_values(\array_filter($alias, 'is_string'));
 
                 if (2 === \count($alias) &&
-                    \preg_match('/^'.$name_regex.'$/', $alias[1]) &&
-                    \preg_match('/^\\\\?('.$name_regex.'\\\\)*'.$name_regex.'$/', $alias[0])
+                        \preg_match('/^' . $name_regex . '$/', $alias[1]) &&
+                        \preg_match('/^\\\\?(' . $name_regex . '\\\\)*' . $name_regex . '$/', $alias[0])
                 ) {
                     $alias = array(
                         \strtolower(\ltrim($alias[0], '\\')),
@@ -198,7 +191,7 @@ final class Utils
                     continue;
                 }
             } elseif (\is_string($alias)) {
-                if (\preg_match('/^\\\\?('.$name_regex.'\\\\)*'.$name_regex.'$/', $alias)) {
+                if (\preg_match('/^\\\\?(' . $name_regex . '\\\\)*' . $name_regex . '$/', $alias)) {
                     $alias = \explode('\\', \strtolower($alias));
                     $alias = \end($alias);
                 } else {
@@ -213,28 +206,27 @@ final class Utils
         $aliases = \array_values($aliases);
     }
 
-    public static function truncateString($input, $length = PHP_INT_MAX, $end = '...', $encoding = false)
-    {
+    public static function truncateString($input, $length = PHP_INT_MAX, $end = '...', $encoding = false) {
         $length = (int) $length;
         $endlength = BlobObject::strlen($end);
 
         if ($endlength >= $length) {
-            throw new InvalidArgumentException('Can\'t truncate a string to '.$length.' characters if ending with string '.$endlength.' characters long');
+            throw new InvalidArgumentException('Can\'t truncate a string to ' . $length . ' characters if ending with string ' . $endlength . ' characters long');
         }
 
         if (BlobObject::strlen($input, $encoding) > $length) {
-            return BlobObject::substr($input, 0, $length - $endlength, $encoding).$end;
+            return BlobObject::substr($input, 0, $length - $endlength, $encoding) . $end;
         }
 
         return $input;
     }
 
-    public static function getTypeString(ReflectionType $type)
-    {
+    public static function getTypeString(ReflectionType $type) {
         if ($type instanceof ReflectionNamedType) {
             return $type->getName();
         }
 
         return (string) $type; // @codeCoverageIgnore
     }
+
 }

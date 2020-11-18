@@ -2,7 +2,7 @@
 
 <table>
     <tbody>
-    {matchedRoute}
+        {matchedRoute}
         <tr>
             <td>Directory:</td>
             <td>{directory}</td>
@@ -20,12 +20,12 @@
             <td>{paramCount} / {truePCount}</td>
         </tr>
         {params}
-            <tr class="route-params-item">
-                <td>{name}</td>
-                <td>{value}</td>
-            </tr>
+        <tr class="route-params-item">
+            <td>{name}</td>
+            <td>{value}</td>
+        </tr>
         {/params}
-    {/matchedRoute}
+        {/matchedRoute}
     </tbody>
 </table>
 
@@ -41,12 +41,12 @@
         </tr>
     </thead>
     <tbody>
-    {routes}
+        {routes}
         <tr>
             <td>{method}</td>
             <td data-debugbar-route="{method}">{route}</td>
             <td>{handler}</td>
         </tr>
-    {/routes}
+        {/routes}
     </tbody>
 </table>

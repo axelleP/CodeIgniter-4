@@ -46,43 +46,42 @@ namespace CodeIgniter\Modules;
  * @author  EllisLab Dev Team
  * @link 	https://codeigniter.com/user_guide/general/modules.html
  */
-class Modules
-{
-	/**
-	 * Auto-Discover
-	 *
-	 * @var boolean
-	 */
-	public $enabled = true;
+class Modules {
 
-	/**
-	 * Auto-Discovery Within Composer Packages
-	 *
-	 * @var boolean
-	 */
-	public $discoverInComposer = true;
+    /**
+     * Auto-Discover
+     *
+     * @var boolean
+     */
+    public $enabled = true;
 
-	/**
-	 * Auto-Discover Rules Handler
-	 *
-	 * @var array
-	 */
-	public $aliases = [];
+    /**
+     * Auto-Discovery Within Composer Packages
+     *
+     * @var boolean
+     */
+    public $discoverInComposer = true;
 
-	/**
-	 * Should the application auto-discover the requested resource.
-	 *
-	 * @param string $alias
-	 *
-	 * @return boolean
-	 */
-	public function shouldDiscover(string $alias): bool
-	{
-		if (! $this->enabled)
-		{
-			return false;
-		}
+    /**
+     * Auto-Discover Rules Handler
+     *
+     * @var array
+     */
+    public $aliases = [];
 
-		return in_array(strtolower($alias), $this->aliases);
-	}
+    /**
+     * Should the application auto-discover the requested resource.
+     *
+     * @param string $alias
+     *
+     * @return boolean
+     */
+    public function shouldDiscover(string $alias): bool {
+        if (!$this->enabled) {
+            return false;
+        }
+
+        return in_array(strtolower($alias), $this->aliases);
+    }
+
 }

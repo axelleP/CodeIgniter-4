@@ -44,81 +44,74 @@ use CodeIgniter\Config\BaseConfig;
 /**
  * Base class for encryption handling
  */
-abstract class BaseHandler implements \CodeIgniter\Encryption\EncrypterInterface
-{
+abstract class BaseHandler implements \CodeIgniter\Encryption\EncrypterInterface {
 
-	/**
-	 * Configuraiton passed from encryption manager
-	 *
-	 * @var string
-	 */
-	protected $config;
+    /**
+     * Configuraiton passed from encryption manager
+     *
+     * @var string
+     */
+    protected $config;
 
-	/**
-	 * Logger instance to record error messages and warnings.
-	 *
-	 * @var \PSR\Log\LoggerInterface
-	 */
-	protected $logger;
+    /**
+     * Logger instance to record error messages and warnings.
+     *
+     * @var \PSR\Log\LoggerInterface
+     */
+    protected $logger;
 
-	//--------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
-	/**
-	 * Constructor
-	 *
-	 * @param BaseConfig $config
-	 */
-	public function __construct(BaseConfig $config = null)
-	{
-		if (empty($config))
-		{
-			$config = new \Config\Encryption();
-		}
+    /**
+     * Constructor
+     *
+     * @param BaseConfig $config
+     */
+    public function __construct(BaseConfig $config = null) {
+        if (empty($config)) {
+            $config = new \Config\Encryption();
+        }
 
-		// make the parameters conveniently accessible
-		foreach ($config as $pkey => $value)
-		{
-			$this->$pkey = $value;
-		}
-	}
+        // make the parameters conveniently accessible
+        foreach ($config as $pkey => $value) {
+            $this->$pkey = $value;
+        }
+    }
 
-	/**
-	 * Byte-safe substr()
-	 *
-	 * @param  string  $str
-	 * @param  integer $start
-	 * @param  integer $length
-	 * @return string
-	 */
-	protected static function substr($str, $start, $length = null)
-	{
-		return mb_substr($str, $start, $length, '8bit');
-	}
+    /**
+     * Byte-safe substr()
+     *
+     * @param  string  $str
+     * @param  integer $start
+     * @param  integer $length
+     * @return string
+     */
+    protected static function substr($str, $start, $length = null) {
+        return mb_substr($str, $start, $length, '8bit');
+    }
 
-	/**
-	 * __get() magic, providing readonly access to some of our properties
-	 *
-	 * @param  string $key Property name
-	 * @return mixed
-	 */
-	public function __get($key)
-	{
-		if (in_array($key, ['cipher', 'key'], true))
-		{
-			return $this->{$key};
-		}
+    /**
+     * __get() magic, providing readonly access to some of our properties
+     *
+     * @param  string $key Property name
+     * @return mixed
+     */
+    public function __get($key) {
+        if (in_array($key, ['cipher', 'key'], true)) {
+            return $this->{$key};
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * __isset() magic, providing checking for some of our properties
-	 *
-	 * @param  string $key Property name
-	 * @return boolean
-	 */
-	public function __isset($key): bool
-	{
-		return in_array($key, ['cipher', 'key'], true);
-	}
+    /**
+     * __isset() magic, providing checking for some of our properties
+     *
+     * @param  string $key Property name
+     * @return boolean
+     */
+    public function __isset($key): bool {
+        return in_array($key, ['cipher', 'key'], true);
+    }
+
 }

@@ -9,12 +9,12 @@
         </tr>
     </thead>
     <tbody>
-    {logs}
+        {logs}
         <tr>
             <td>{level}</td>
             <td>{msg}</td>
         </tr>
-    {/logs}
+        {/logs}
     </tbody>
 </table>
 { endif }

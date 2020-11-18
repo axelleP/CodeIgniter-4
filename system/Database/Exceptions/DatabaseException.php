@@ -40,12 +40,13 @@ namespace CodeIgniter\Database\Exceptions;
 
 use CodeIgniter\Exceptions\ExceptionInterface;
 
-class DatabaseException extends \Error implements ExceptionInterface
-{
-	/**
-	 * Exit status code
-	 *
-	 * @var integer
-	 */
-	protected $code = 8;
+class DatabaseException extends \Error implements ExceptionInterface {
+
+    /**
+     * Exit status code
+     *
+     * @var integer
+     */
+    protected $code = 8;
+
 }

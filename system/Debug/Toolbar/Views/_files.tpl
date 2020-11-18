@@ -1,16 +1,16 @@
 <table>
     <tbody>
-    {userFiles}
+        {userFiles}
         <tr>
             <td>{name}</td>
             <td>{path}</td>
         </tr>
-    {/userFiles}
-    {coreFiles}
+        {/userFiles}
+        {coreFiles}
         <tr class="muted">
             <td class="debug-bar-width20e">{name}</td>
             <td>{path}</td>
         </tr>
-    {/coreFiles}
+        {/coreFiles}
     </tbody>
 </table>

@@ -28,20 +28,17 @@ namespace Kint\Parser;
 use Kint\Object\BasicObject;
 use Kint\Object\Representation\ColorRepresentation;
 
-class ColorPlugin extends Plugin
-{
-    public function getTypes()
-    {
+class ColorPlugin extends Plugin {
+
+    public function getTypes() {
         return array('string');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (\strlen($var) > 32) {
             return;
         }
@@ -60,4 +57,5 @@ class ColorPlugin extends Plugin
             $o->hints[] = 'color';
         }
     }
+
 }

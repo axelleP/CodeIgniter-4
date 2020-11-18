@@ -30,22 +30,19 @@ use Kint\Object\TraceFrameObject;
 use Kint\Object\TraceObject;
 use Kint\Utils;
 
-class TracePlugin extends Plugin
-{
+class TracePlugin extends Plugin {
+
     public static $blacklist = array('spl_autoload_call');
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('array');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (!$o->value) {
             return;
         }
@@ -89,4 +86,5 @@ class TracePlugin extends Plugin
         $traceobj->size = \count($rep->contents);
         $o = $traceobj;
     }
+
 }

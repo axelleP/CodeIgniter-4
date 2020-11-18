@@ -35,8 +35,8 @@ use Kint\Object\ResourceObject;
 use ReflectionObject;
 use stdClass;
 
-class Parser
-{
+class Parser {
+
     /**
      * Plugin triggers.
      *
@@ -68,8 +68,7 @@ class Parser
      * @param false|int   $depth_limit Maximum depth to parse data
      * @param null|string $caller      Caller class name
      */
-    public function __construct($depth_limit = false, $caller = null)
-    {
+    public function __construct($depth_limit = false, $caller = null) {
         $this->marker = \uniqid("kint\0", true);
 
         $this->caller_class = $caller;
@@ -84,15 +83,13 @@ class Parser
      *
      * @param null|string $caller Caller class name
      */
-    public function setCallerClass($caller = null)
-    {
+    public function setCallerClass($caller = null) {
         $this->noRecurseCall();
 
         $this->caller_class = $caller;
     }
 
-    public function getCallerClass()
-    {
+    public function getCallerClass() {
         return $this->caller_class;
     }
 
@@ -101,15 +98,13 @@ class Parser
      *
      * @param false|int $depth_limit Maximum depth to parse data
      */
-    public function setDepthLimit($depth_limit = false)
-    {
+    public function setDepthLimit($depth_limit = false) {
         $this->noRecurseCall();
 
         $this->depth_limit = $depth_limit;
     }
 
-    public function getDepthLimit()
-    {
+    public function getDepthLimit() {
         return $this->depth_limit;
     }
 
@@ -123,8 +118,7 @@ class Parser
      *
      * @return BasicObject
      */
-    public function parseDeep(&$var, BasicObject $o)
-    {
+    public function parseDeep(&$var, BasicObject $o) {
         $depth_limit = $this->depth_limit;
         $this->depth_limit = false;
 
@@ -143,8 +137,7 @@ class Parser
      *
      * @return BasicObject
      */
-    public function parse(&$var, BasicObject $o)
-    {
+    public function parse(&$var, BasicObject $o) {
         $o->type = \strtolower(\gettype($var));
 
         if (!$this->applyPlugins($var, $o, self::TRIGGER_BEGIN)) {
@@ -170,8 +163,7 @@ class Parser
         }
     }
 
-    public function addPlugin(Plugin $p)
-    {
+    public function addPlugin(Plugin $p) {
         if (!$types = $p->getTypes()) {
             return false;
         }
@@ -202,18 +194,15 @@ class Parser
         return true;
     }
 
-    public function clearPlugins()
-    {
+    public function clearPlugins() {
         $this->plugins = array();
     }
 
-    public function haltParse()
-    {
+    public function haltParse() {
         $this->parse_break = true;
     }
 
-    public function childHasPath(InstanceObject $parent, BasicObject $child)
-    {
+    public function childHasPath(InstanceObject $parent, BasicObject $child) {
         if ('object' === $parent->type && (null !== $parent->access_path || $child->static || $child->const)) {
             if (BasicObject::ACCESS_PUBLIC === $child->access) {
                 return true;
@@ -251,15 +240,13 @@ class Parser
      *
      * @return array Array with recursion marker removed
      */
-    public function getCleanArray(array $array)
-    {
+    public function getCleanArray(array $array) {
         unset($array[$this->marker]);
 
         return $array;
     }
 
-    protected function noRecurseCall()
-    {
+    protected function noRecurseCall() {
         $bt = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS);
 
         $caller_frame = array(
@@ -272,13 +259,12 @@ class Parser
 
         foreach ($bt as $frame) {
             if (isset($frame['object']) && $frame['object'] === $this) {
-                throw new DomainException(__CLASS__.'::'.$caller_frame['function'].' cannot be called from inside a parse');
+                throw new DomainException(__CLASS__ . '::' . $caller_frame['function'] . ' cannot be called from inside a parse');
             }
         }
     }
 
-    private function parseGeneric(&$var, BasicObject $o)
-    {
+    private function parseGeneric(&$var, BasicObject $o) {
         $rep = new Representation('Contents');
         $rep->contents = $var;
         $rep->implicit_label = true;
@@ -298,8 +284,7 @@ class Parser
      *
      * @return BasicObject
      */
-    private function parseString(&$var, BasicObject $o)
-    {
+    private function parseString(&$var, BasicObject $o) {
         $string = new BlobObject();
         $string->transplant($o);
         $string->encoding = BlobObject::detectEncoding($var);
@@ -325,8 +310,7 @@ class Parser
      *
      * @return BasicObject
      */
-    private function parseArray(array &$var, BasicObject $o)
-    {
+    private function parseArray(array &$var, BasicObject $o) {
         $array = new BasicObject();
         $array->transplant($o);
         $array->size = \count($var);
@@ -387,9 +371,9 @@ class Parser
 
             if (null !== $array->access_path) {
                 if (\is_string($key) && (string) (int) $key === $key) {
-                    $child->access_path = 'array_values('.$array->access_path.')['.$i.']'; // @codeCoverageIgnore
+                    $child->access_path = 'array_values(' . $array->access_path . ')[' . $i . ']'; // @codeCoverageIgnore
                 } else {
-                    $child->access_path = $array->access_path.'['.\var_export($key, true).']';
+                    $child->access_path = $array->access_path . '[' . \var_export($key, true) . ']';
                 }
             }
 
@@ -418,8 +402,7 @@ class Parser
      *
      * @return BasicObject
      */
-    private function parseObject(&$var, BasicObject $o)
-    {
+    private function parseObject(&$var, BasicObject $o) {
         $hash = \spl_object_hash($var);
         $values = (array) $var;
 
@@ -496,11 +479,11 @@ class Parser
                 $child->access_path = $object->access_path;
 
                 if (!KINT_PHP72 && \is_int($child->name)) {
-                    $child->access_path = 'array_values((array) '.$child->access_path.')['.$i.']'; // @codeCoverageIgnore
+                    $child->access_path = 'array_values((array) ' . $child->access_path . ')[' . $i . ']'; // @codeCoverageIgnore
                 } elseif (\preg_match('/^[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*$/', $child->name)) {
-                    $child->access_path .= '->'.$child->name;
+                    $child->access_path .= '->' . $child->name;
                 } else {
-                    $child->access_path .= '->{'.\var_export((string) $child->name, true).'}';
+                    $child->access_path .= '->{' . \var_export((string) $child->name, true) . '}';
                 }
             }
 
@@ -531,8 +514,7 @@ class Parser
      *
      * @return BasicObject
      */
-    private function parseResource(&$var, BasicObject $o)
-    {
+    private function parseResource(&$var, BasicObject $o) {
         $resource = new ResourceObject();
         $resource->transplant($o);
         $resource->resource_type = \get_resource_type($var);
@@ -550,8 +532,7 @@ class Parser
      *
      * @return BasicObject
      */
-    private function parseUnknown(&$var, BasicObject $o)
-    {
+    private function parseUnknown(&$var, BasicObject $o) {
         $o->type = 'unknown';
         $this->applyPlugins($var, $o, self::TRIGGER_SUCCESS);
 
@@ -567,8 +548,7 @@ class Parser
      *
      * @return bool Continue parsing
      */
-    private function applyPlugins(&$var, BasicObject &$o, $trigger)
-    {
+    private function applyPlugins(&$var, BasicObject &$o, $trigger) {
         $break_stash = $this->parse_break;
 
         /** @var bool Psalm bug workaround */
@@ -585,8 +565,7 @@ class Parser
                 $plugin->parse($var, $o, $trigger);
             } catch (Exception $e) {
                 \trigger_error(
-                    'An exception ('.\get_class($e).') was thrown in '.$e->getFile().' on line '.$e->getLine().' while executing Kint Parser Plugin "'.\get_class($plugin).'". Error message: '.$e->getMessage(),
-                    E_USER_WARNING
+                        'An exception (' . \get_class($e) . ') was thrown in ' . $e->getFile() . ' on line ' . $e->getLine() . ' while executing Kint Parser Plugin "' . \get_class($plugin) . '". Error message: ' . $e->getMessage(), E_USER_WARNING
                 );
             }
 
@@ -601,4 +580,5 @@ class Parser
 
         return true;
     }
+
 }

@@ -25,15 +25,14 @@
 
 namespace Kint\Object\Representation;
 
-class DocstringRepresentation extends Representation
-{
+class DocstringRepresentation extends Representation {
+
     public $file;
     public $line;
     public $class;
     public $hints = array('docstring');
 
-    public function __construct($docstring, $file, $line, $class = null)
-    {
+    public function __construct($docstring, $file, $line, $class = null) {
         parent::__construct('Docstring');
 
         $this->file = $file;
@@ -59,8 +58,7 @@ class DocstringRepresentation extends Representation
      *
      * @return null|string Docstring with comments stripped
      */
-    public function getDocstringWithoutComments()
-    {
+    public function getDocstringWithoutComments() {
         if (!$this->contents) {
             return null;
         }
@@ -70,4 +68,5 @@ class DocstringRepresentation extends Representation
 
         return \trim($string);
     }
+
 }

@@ -1,4 +1,6 @@
-<?php namespace CodeIgniter\Test\Mock;
+<?php
+
+namespace CodeIgniter\Test\Mock;
 
 /**
  * CodeIgniter
@@ -35,32 +37,27 @@
  * @since      Version 4.0.0
  * @filesource
  */
-
 use CodeIgniter\Events\Events;
 
 /**
  * Events
  */
-class MockEvents extends Events
-{
+class MockEvents extends Events {
 
-	public function getListeners()
-	{
-		return self::$listeners;
-	}
+    public function getListeners() {
+        return self::$listeners;
+    }
 
-	public function getEventsFile()
-	{
-		return self::$eventsFile;
-	}
+    public function getEventsFile() {
+        return self::$eventsFile;
+    }
 
-	public function getSimulate()
-	{
-		return self::$simulate;
-	}
+    public function getSimulate() {
+        return self::$simulate;
+    }
 
-	public function unInitialize()
-	{
-		static::$initialized = false;
-	}
+    public function unInitialize() {
+        static::$initialized = false;
+    }
+
 }

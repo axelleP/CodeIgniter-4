@@ -29,27 +29,24 @@ use Kint\Object\BasicObject;
 use Kint\Object\Representation\SplFileInfoRepresentation;
 use SplFileInfo;
 
-class FsPathPlugin extends Plugin
-{
+class FsPathPlugin extends Plugin {
+
     public static $blacklist = array('/', '.');
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('string');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (\strlen($var) > 2048) {
             return;
         }
 
-        if (!\preg_match('/[\\/\\'.DIRECTORY_SEPARATOR.']/', $var)) {
+        if (!\preg_match('/[\\/\\' . DIRECTORY_SEPARATOR . ']/', $var)) {
             return;
         }
 
@@ -69,4 +66,5 @@ class FsPathPlugin extends Plugin
         $r->hints[] = 'fspath';
         $o->addRepresentation($r, 0);
     }
+
 }

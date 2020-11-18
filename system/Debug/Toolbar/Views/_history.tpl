@@ -11,10 +11,10 @@
         </tr>
     </thead>
     <tbody>
-    {files}
+        {files}
         <tr data-active="{active}">
-        	<td class="debug-bar-width70p">
-            	<button class="ci-history-load" data-time="{time}">Load</button>
+            <td class="debug-bar-width70p">
+                <button class="ci-history-load" data-time="{time}">Load</button>
             </td>
             <td class="debug-bar-width140p">{datetime}</td>
             <td>{status}</td>
@@ -23,6 +23,6 @@
             <td>{contentType}</td>
             <td>{isAJAX}</td>
         </tr>
-    {/files}
+        {/files}
     </tbody>
 </table>

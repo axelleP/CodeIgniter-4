@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -44,6 +45,6 @@ namespace CodeIgniter\Cache\Exceptions;
  *
  * catch (\CodeIgniter\Cache\Exceptions\ExceptionInterface) { ... }
  */
-interface ExceptionInterface
-{
+interface ExceptionInterface {
+
 }

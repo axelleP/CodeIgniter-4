@@ -30,8 +30,8 @@ use Kint\Object\BasicObject;
 use Kint\Object\InstanceObject;
 use Kint\Utils;
 
-class TextRenderer extends Renderer
-{
+class TextRenderer extends Renderer {
+
     /**
      * TextRenderer plugins should be instances of Kint\Renderer\Text\Plugin.
      */
@@ -90,20 +90,16 @@ class TextRenderer extends Renderer
      * @var int
      */
     public static $sort = self::SORT_NONE;
-
     public $header_width = 80;
     public $indent_width = 4;
-
     protected $plugin_objs = array();
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->header_width = self::$default_width;
         $this->indent_width = self::$default_indent;
     }
 
-    public function render(BasicObject $o)
-    {
+    public function render(BasicObject $o) {
         if ($plugin = $this->getPlugin(self::$plugins, $o->hints)) {
             if (\strlen($output = $plugin->render($o))) {
                 return $output;
@@ -113,44 +109,41 @@ class TextRenderer extends Renderer
         $out = '';
 
         if (0 == $o->depth) {
-            $out .= $this->colorTitle($this->renderTitle($o)).PHP_EOL;
+            $out .= $this->colorTitle($this->renderTitle($o)) . PHP_EOL;
         }
 
         $out .= $this->renderHeader($o);
-        $out .= $this->renderChildren($o).PHP_EOL;
+        $out .= $this->renderChildren($o) . PHP_EOL;
 
         return $out;
     }
 
-    public function renderNothing()
-    {
+    public function renderNothing() {
         if (self::$decorations) {
             return $this->colorTitle(
-                $this->boxText('No argument', $this->header_width)
-            ).PHP_EOL;
+                            $this->boxText('No argument', $this->header_width)
+                    ) . PHP_EOL;
         }
 
-        return $this->colorTitle('No argument').PHP_EOL;
+        return $this->colorTitle('No argument') . PHP_EOL;
     }
 
-    public function boxText($text, $width)
-    {
-        $out = '┌'.\str_repeat('─', $width - 2).'┐'.PHP_EOL;
+    public function boxText($text, $width) {
+        $out = '┌' . \str_repeat('─', $width - 2) . '┐' . PHP_EOL;
 
         if (\strlen($text)) {
             $text = Utils::truncateString($text, $width - 4);
             $text = \str_pad($text, $width - 4);
 
-            $out .= '│ '.$this->escape($text).' │'.PHP_EOL;
+            $out .= '│ ' . $this->escape($text) . ' │' . PHP_EOL;
         }
 
-        $out .= '└'.\str_repeat('─', $width - 2).'┘';
+        $out .= '└' . \str_repeat('─', $width - 2) . '┘';
 
         return $out;
     }
 
-    public function renderTitle(BasicObject $o)
-    {
+    public function renderTitle(BasicObject $o) {
         $name = (string) $o->getName();
 
         if (self::$decorations) {
@@ -160,8 +153,7 @@ class TextRenderer extends Renderer
         return Utils::truncateString($name, $this->header_width);
     }
 
-    public function renderHeader(BasicObject $o)
-    {
+    public function renderHeader(BasicObject $o) {
         $output = array();
 
         if ($o->depth) {
@@ -180,14 +172,14 @@ class TextRenderer extends Renderer
 
         if (null !== ($s = $o->getType())) {
             if ($o->reference) {
-                $s = '&'.$s;
+                $s = '&' . $s;
             }
 
             $output[] = $this->colorType($this->escape($s));
         }
 
         if (null !== ($s = $o->getSize())) {
-            $output[] = '('.$this->escape($s).')';
+            $output[] = '(' . $this->escape($s) . ')';
         }
 
         if (null !== ($s = $o->getValueShort())) {
@@ -197,11 +189,10 @@ class TextRenderer extends Renderer
             $output[] = $this->colorValue($this->escape($s));
         }
 
-        return \str_repeat(' ', $o->depth * $this->indent_width).\implode(' ', $output);
+        return \str_repeat(' ', $o->depth * $this->indent_width) . \implode(' ', $output);
     }
 
-    public function renderChildren(BasicObject $o)
-    {
+    public function renderChildren(BasicObject $o) {
         if ('array' === $o->type) {
             $output = ' [';
         } elseif ('object' === $o->type) {
@@ -225,7 +216,7 @@ class TextRenderer extends Renderer
         }
 
         if ($children) {
-            $output .= PHP_EOL.$children;
+            $output .= PHP_EOL . $children;
             $output .= \str_repeat(' ', $o->depth * $this->indent_width);
         }
 
@@ -238,23 +229,19 @@ class TextRenderer extends Renderer
         return $output;
     }
 
-    public function colorValue($string)
-    {
+    public function colorValue($string) {
         return $string;
     }
 
-    public function colorType($string)
-    {
+    public function colorType($string) {
         return $string;
     }
 
-    public function colorTitle($string)
-    {
+    public function colorTitle($string) {
         return $string;
     }
 
-    public function postRender()
-    {
+    public function postRender() {
         if (self::$decorations) {
             $output = \str_repeat('═', $this->header_width);
         } else {
@@ -269,11 +256,10 @@ class TextRenderer extends Renderer
             $output .= PHP_EOL;
         }
 
-        return $this->colorTitle($output.$this->calledFrom().PHP_EOL);
+        return $this->colorTitle($output . $this->calledFrom() . PHP_EOL);
     }
 
-    public function filterParserPlugins(array $plugins)
-    {
+    public function filterParserPlugins(array $plugins) {
         $return = array();
 
         foreach ($plugins as $index => $plugin) {
@@ -288,35 +274,29 @@ class TextRenderer extends Renderer
         return $return;
     }
 
-    public function ideLink($file, $line)
-    {
-        return $this->escape(Kint::shortenPath($file)).':'.$line;
+    public function ideLink($file, $line) {
+        return $this->escape(Kint::shortenPath($file)) . ':' . $line;
     }
 
-    public function escape($string, $encoding = false)
-    {
+    public function escape($string, $encoding = false) {
         return $string;
     }
 
-    protected function calledFrom()
-    {
+    protected function calledFrom() {
         $output = '';
 
         if (isset($this->call_info['callee']['file'])) {
-            $output .= 'Called from '.$this->ideLink(
-                $this->call_info['callee']['file'],
-                $this->call_info['callee']['line']
+            $output .= 'Called from ' . $this->ideLink(
+                            $this->call_info['callee']['file'], $this->call_info['callee']['line']
             );
         }
 
         if (isset($this->call_info['callee']['function']) && (
                 !empty($this->call_info['callee']['class']) ||
                 !\in_array(
-                    $this->call_info['callee']['function'],
-                    array('include', 'include_once', 'require', 'require_once'),
-                    true
+                        $this->call_info['callee']['function'], array('include', 'include_once', 'require', 'require_once'), true
                 )
-            )
+                )
         ) {
             $output .= ' [';
             if (isset($this->call_info['callee']['class'])) {
@@ -325,14 +305,13 @@ class TextRenderer extends Renderer
             if (isset($this->call_info['callee']['type'])) {
                 $output .= $this->call_info['callee']['type'];
             }
-            $output .= $this->call_info['callee']['function'].'()]';
+            $output .= $this->call_info['callee']['function'] . '()]';
         }
 
         return $output;
     }
 
-    protected function getPlugin(array $plugins, array $hints)
-    {
+    protected function getPlugin(array $plugins, array $hints) {
         if ($plugins = $this->matchPlugins($plugins, $hints)) {
             $plugin = \end($plugins);
 
@@ -343,4 +322,5 @@ class TextRenderer extends Renderer
             return $this->plugin_objs[$plugin];
         }
     }
+
 }

@@ -46,37 +46,35 @@ use Config\Services;
 /**
  * Debug toolbar filter
  */
-class DebugToolbar implements FilterInterface
-{
+class DebugToolbar implements FilterInterface {
 
-	/**
-	 * We don't need to do anything here.
-	 *
-	 * @param RequestInterface|\CodeIgniter\HTTP\IncomingRequest $request
-	 * @param array|null                                         $arguments
-	 *
-	 * @return void
-	 */
-	public function before(RequestInterface $request, $arguments = null)
-	{
-	}
+    /**
+     * We don't need to do anything here.
+     *
+     * @param RequestInterface|\CodeIgniter\HTTP\IncomingRequest $request
+     * @param array|null                                         $arguments
+     *
+     * @return void
+     */
+    public function before(RequestInterface $request, $arguments = null) {
 
-	//--------------------------------------------------------------------
+    }
 
-	/**
-	 * If the debug flag is set (CI_DEBUG) then collect performance
-	 * and debug information and display it in a toolbar.
-	 *
-	 * @param RequestInterface|\CodeIgniter\HTTP\IncomingRequest $request
-	 * @param ResponseInterface|\CodeIgniter\HTTP\Response       $response
-	 * @param array|null                                         $arguments
-	 *
-	 * @return void
-	 */
-	public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-	{
-		Services::toolbar()->prepare($request, $response);
-	}
+    //--------------------------------------------------------------------
 
-	//--------------------------------------------------------------------
+    /**
+     * If the debug flag is set (CI_DEBUG) then collect performance
+     * and debug information and display it in a toolbar.
+     *
+     * @param RequestInterface|\CodeIgniter\HTTP\IncomingRequest $request
+     * @param ResponseInterface|\CodeIgniter\HTTP\Response       $response
+     * @param array|null                                         $arguments
+     *
+     * @return void
+     */
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null) {
+        Services::toolbar()->prepare($request, $response);
+    }
+
+    //--------------------------------------------------------------------
 }

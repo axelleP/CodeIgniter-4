@@ -26,13 +26,13 @@
 use Kint\Kint;
 
 if (!\function_exists('d')) {
+
     /**
      * Alias of Kint::dump().
      *
      * @return int|string
      */
-    function d()
-    {
+    function d() {
         $args = \func_get_args();
 
         return \call_user_func_array(array('Kint', 'dump'), $args);
@@ -42,6 +42,7 @@ if (!\function_exists('d')) {
 }
 
 if (!\function_exists('s')) {
+
     /**
      * Alias of Kint::dump(), however the output is in plain text.
      *
@@ -57,8 +58,7 @@ if (!\function_exists('s')) {
      *
      * @return int|string
      */
-    function s()
-    {
+    function s() {
         if (!Kint::$enabled_mode) {
             return 0;
         }

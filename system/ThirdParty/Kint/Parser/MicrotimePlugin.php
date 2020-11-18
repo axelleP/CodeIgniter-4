@@ -28,25 +28,22 @@ namespace Kint\Parser;
 use Kint\Object\BasicObject;
 use Kint\Object\Representation\MicrotimeRepresentation;
 
-class MicrotimePlugin extends Plugin
-{
+class MicrotimePlugin extends Plugin {
+
     private static $last = null;
     private static $start = null;
     private static $times = 0;
     private static $group = 0;
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('string', 'double');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (0 !== $o->depth) {
             return;
         }
@@ -95,11 +92,11 @@ class MicrotimePlugin extends Plugin
         $o->hints[] = 'microtime';
     }
 
-    public static function clean()
-    {
+    public static function clean() {
         self::$last = null;
         self::$start = null;
         self::$times = 0;
         ++self::$group;
     }
+
 }

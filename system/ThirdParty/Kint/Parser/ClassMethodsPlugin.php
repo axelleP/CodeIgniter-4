@@ -31,22 +31,19 @@ use Kint\Object\MethodObject;
 use Kint\Object\Representation\Representation;
 use ReflectionClass;
 
-class ClassMethodsPlugin extends Plugin
-{
+class ClassMethodsPlugin extends Plugin {
+
     private static $cache = array();
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('object');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         $class = \get_class($var);
 
         // assuming class definition will not change inside one request
@@ -91,8 +88,7 @@ class ClassMethodsPlugin extends Plugin
         }
     }
 
-    private static function sort(MethodObject $a, MethodObject $b)
-    {
+    private static function sort(MethodObject $a, MethodObject $b) {
         $sort = ((int) $a->static) - ((int) $b->static);
         if ($sort) {
             return $sort;
@@ -110,4 +106,5 @@ class ClassMethodsPlugin extends Plugin
 
         return $a->startline - $b->startline;
     }
+
 }

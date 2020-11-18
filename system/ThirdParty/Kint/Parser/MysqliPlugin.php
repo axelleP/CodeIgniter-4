@@ -34,22 +34,20 @@ use Mysqli;
  * Due to the way mysqli is implemented in PHP, this will cause
  * warnings on certain Mysqli objects if screaming is enabled.
  */
-class MysqliPlugin extends Plugin
-{
+class MysqliPlugin extends Plugin {
+
     // These 'properties' are actually globals
     protected $always_readable = array(
         'client_version' => true,
         'connect_errno' => true,
         'connect_error' => true,
     );
-
     // These are readable on empty mysqli objects, but not on failed connections
     protected $empty_readable = array(
         'client_info' => true,
         'errno' => true,
         'error' => true,
     );
-
     // These are only readable on connected mysqli objects
     protected $connected_readable = array(
         'affected_rows' => true,
@@ -67,18 +65,15 @@ class MysqliPlugin extends Plugin
         'warning_count' => true,
     );
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('object');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_COMPLETE;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (!$var instanceof Mysqli) {
             return;
         }
@@ -126,4 +121,5 @@ class MysqliPlugin extends Plugin
             $o->value->contents[$key] = $this->parser->parse($param, $base);
         }
     }
+
 }

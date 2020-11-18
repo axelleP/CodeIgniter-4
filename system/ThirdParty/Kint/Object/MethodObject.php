@@ -30,8 +30,8 @@ use Kint\Utils;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 
-class MethodObject extends BasicObject
-{
+class MethodObject extends BasicObject {
+
     public $type = 'method';
     public $filename;
     public $startline;
@@ -45,11 +45,9 @@ class MethodObject extends BasicObject
     public $return_reference = false;
     public $hints = array('callable', 'method');
     public $showparams = true;
-
     private $paramcache;
 
-    public function __construct(ReflectionFunctionAbstract $method)
-    {
+    public function __construct(ReflectionFunctionAbstract $method) {
         parent::__construct();
 
         $this->name = $method->getName();
@@ -90,9 +88,7 @@ class MethodObject extends BasicObject
         }
 
         $docstring = new DocstringRepresentation(
-            $this->docstring,
-            $this->filename,
-            $this->startline
+                $this->docstring, $this->filename, $this->startline
         );
 
         $docstring->implicit_label = true;
@@ -100,8 +96,7 @@ class MethodObject extends BasicObject
         $this->value = $docstring;
     }
 
-    public function setAccessPathFrom(InstanceObject $parent)
-    {
+    public function setAccessPathFrom(InstanceObject $parent) {
         static $magic = array(
             '__call' => true,
             '__callstatic' => true,
@@ -123,26 +118,25 @@ class MethodObject extends BasicObject
         $name = \strtolower($this->name);
 
         if ('__construct' === $name) {
-            $this->access_path = 'new \\'.$parent->getType();
+            $this->access_path = 'new \\' . $parent->getType();
         } elseif ('__invoke' === $name) {
             $this->access_path = $parent->access_path;
         } elseif ('__clone' === $name) {
-            $this->access_path = 'clone '.$parent->access_path;
+            $this->access_path = 'clone ' . $parent->access_path;
             $this->showparams = false;
         } elseif ('__tostring' === $name) {
-            $this->access_path = '(string) '.$parent->access_path;
+            $this->access_path = '(string) ' . $parent->access_path;
             $this->showparams = false;
         } elseif (isset($magic[$name])) {
             $this->access_path = null;
         } elseif ($this->static) {
-            $this->access_path = '\\'.$this->owner_class.'::'.$this->name;
+            $this->access_path = '\\' . $this->owner_class . '::' . $this->name;
         } else {
-            $this->access_path = $parent->access_path.'->'.$this->name;
+            $this->access_path = $parent->access_path . '->' . $this->name;
         }
     }
 
-    public function getValueShort()
-    {
+    public function getValueShort() {
         if (!$this->value || !($this->value instanceof DocstringRepresentation)) {
             return parent::getValueShort();
         }
@@ -162,7 +156,7 @@ class MethodObject extends BasicObject
                 break;
             }
 
-            $out .= $line.' ';
+            $out .= $line . ' ';
         }
 
         if (\strlen($out)) {
@@ -170,8 +164,7 @@ class MethodObject extends BasicObject
         }
     }
 
-    public function getModifiers()
-    {
+    public function getModifiers() {
         $mods = array(
             $this->abstract ? 'abstract' : null,
             $this->final ? 'final' : null,
@@ -183,7 +176,7 @@ class MethodObject extends BasicObject
 
         foreach ($mods as $word) {
             if (null !== $word) {
-                $out .= $word.' ';
+                $out .= $word . ' ';
             }
         }
 
@@ -192,19 +185,17 @@ class MethodObject extends BasicObject
         }
     }
 
-    public function getAccessPath()
-    {
+    public function getAccessPath() {
         if (null !== $this->access_path) {
             if ($this->showparams) {
-                return parent::getAccessPath().'('.$this->getParams().')';
+                return parent::getAccessPath() . '(' . $this->getParams() . ')';
             }
 
             return parent::getAccessPath();
         }
     }
 
-    public function getParams()
-    {
+    public function getParams() {
         if (null !== $this->paramcache) {
             return $this->paramcache;
         }
@@ -219,19 +210,18 @@ class MethodObject extends BasicObject
 
             $default = $p->getDefault();
             if ($default) {
-                $default = ' = '.$default;
+                $default = ' = ' . $default;
             }
 
             $ref = $p->reference ? '&' : '';
 
-            $out[] = $type.$ref.$p->getName().$default;
+            $out[] = $type . $ref . $p->getName() . $default;
         }
 
         return $this->paramcache = \implode(', ', $out);
     }
 
-    public function getPhpDocUrl()
-    {
+    public function getPhpDocUrl() {
         if (!$this->internal) {
             return null;
         }
@@ -248,6 +238,7 @@ class MethodObject extends BasicObject
             $funcname = \substr($funcname, 2);
         }
 
-        return 'https://secure.php.net/'.$class.'.'.$funcname;
+        return 'https://secure.php.net/' . $class . '.' . $funcname;
     }
+
 }

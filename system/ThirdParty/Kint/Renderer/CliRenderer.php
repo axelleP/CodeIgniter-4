@@ -27,8 +27,8 @@ namespace Kint\Renderer;
 
 use Kint\Object\BasicObject;
 
-class CliRenderer extends TextRenderer
-{
+class CliRenderer extends TextRenderer {
+
     /**
      * @var bool enable colors when Kint is run in *UNIX* command line
      */
@@ -56,15 +56,11 @@ class CliRenderer extends TextRenderer
      * @var int
      */
     public static $min_terminal_width = 40;
-
     protected static $terminal_width = null;
-
     protected $windows_output = false;
-
     protected $colors = false;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         if (!self::$force_utf8) {
@@ -86,35 +82,31 @@ class CliRenderer extends TextRenderer
         $this->header_width = self::$terminal_width;
     }
 
-    public function colorValue($string)
-    {
+    public function colorValue($string) {
         if (!$this->colors) {
             return $string;
         }
 
-        return "\x1b[32m".\str_replace("\n", "\x1b[0m\n\x1b[32m", $string)."\x1b[0m";
+        return "\x1b[32m" . \str_replace("\n", "\x1b[0m\n\x1b[32m", $string) . "\x1b[0m";
     }
 
-    public function colorType($string)
-    {
+    public function colorType($string) {
         if (!$this->colors) {
             return $string;
         }
 
-        return "\x1b[35;1m".\str_replace("\n", "\x1b[0m\n\x1b[35;1m", $string)."\x1b[0m";
+        return "\x1b[35;1m" . \str_replace("\n", "\x1b[0m\n\x1b[35;1m", $string) . "\x1b[0m";
     }
 
-    public function colorTitle($string)
-    {
+    public function colorTitle($string) {
         if (!$this->colors) {
             return $string;
         }
 
-        return "\x1b[36m".\str_replace("\n", "\x1b[0m\n\x1b[36m", $string)."\x1b[0m";
+        return "\x1b[36m" . \str_replace("\n", "\x1b[0m\n\x1b[36m", $string) . "\x1b[0m";
     }
 
-    public function renderTitle(BasicObject $o)
-    {
+    public function renderTitle(BasicObject $o) {
         if ($this->windows_output) {
             return $this->utf8ToWindows(parent::renderTitle($o));
         }
@@ -122,13 +114,11 @@ class CliRenderer extends TextRenderer
         return parent::renderTitle($o);
     }
 
-    public function preRender()
-    {
+    public function preRender() {
         return PHP_EOL;
     }
 
-    public function postRender()
-    {
+    public function postRender() {
         if ($this->windows_output) {
             return $this->utf8ToWindows(parent::postRender());
         }
@@ -136,17 +126,14 @@ class CliRenderer extends TextRenderer
         return parent::postRender();
     }
 
-    public function escape($string, $encoding = false)
-    {
+    public function escape($string, $encoding = false) {
         return \str_replace("\x1b", '\\x1b', $string);
     }
 
-    protected function utf8ToWindows($string)
-    {
+    protected function utf8ToWindows($string) {
         return \str_replace(
-            array('┌', '═', '┐', '│', '└', '─', '┘'),
-            array("\xda", "\xdc", "\xbf", "\xb3", "\xc0", "\xc4", "\xd9"),
-            $string
+                array('┌', '═', '┐', '│', '└', '─', '┘'), array("\xda", "\xdc", "\xbf", "\xb3", "\xc0", "\xc4", "\xd9"), $string
         );
     }
+
 }

@@ -30,8 +30,8 @@ use Exception;
 use Kint\Object\BasicObject;
 use Kint\Object\Representation\Representation;
 
-class XmlPlugin extends Plugin
-{
+class XmlPlugin extends Plugin {
+
     /**
      * Which method to parse the variable with.
      *
@@ -43,27 +43,24 @@ class XmlPlugin extends Plugin
      */
     public static $parse_method = 'SimpleXML';
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('string');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if ('<?xml' !== \substr($var, 0, 5)) {
             return;
         }
 
-        if (!\method_exists(\get_class($this), 'xmlTo'.self::$parse_method)) {
+        if (!\method_exists(\get_class($this), 'xmlTo' . self::$parse_method)) {
             return;
         }
 
-        $xml = \call_user_func(array(\get_class($this), 'xmlTo'.self::$parse_method), $var, $o->access_path);
+        $xml = \call_user_func(array(\get_class($this), 'xmlTo' . self::$parse_method), $var, $o->access_path);
 
         if (empty($xml)) {
             return;
@@ -82,8 +79,7 @@ class XmlPlugin extends Plugin
         $o->addRepresentation($r, 0);
     }
 
-    protected static function xmlToSimpleXML($var, $parent_path)
-    {
+    protected static function xmlToSimpleXML($var, $parent_path) {
         try {
             $errors = \libxml_use_internal_errors(true);
             $xml = \simplexml_load_string($var);
@@ -103,7 +99,7 @@ class XmlPlugin extends Plugin
         if (null === $parent_path) {
             $access_path = null;
         } else {
-            $access_path = 'simplexml_load_string('.$parent_path.')';
+            $access_path = 'simplexml_load_string(' . $parent_path . ')';
         }
 
         $name = $xml->getName();
@@ -126,8 +122,7 @@ class XmlPlugin extends Plugin
      *
      * @return null|array The root element DOMNode, the access path, and the root element name
      */
-    protected static function xmlToDOMDocument($var, $parent_path)
-    {
+    protected static function xmlToDOMDocument($var, $parent_path) {
         // There's no way to check validity in DOMDocument without making errors. For shame!
         if (!self::xmlToSimpleXML($var, $parent_path)) {
             return null;
@@ -140,11 +135,12 @@ class XmlPlugin extends Plugin
         if (null === $parent_path) {
             $access_path = null;
         } else {
-            $access_path = '@\\DOMDocument::loadXML('.$parent_path.')->firstChild';
+            $access_path = '@\\DOMDocument::loadXML(' . $parent_path . ')->firstChild';
         }
 
         $name = $xml->nodeName;
 
         return array($xml, $access_path, $name);
     }
+
 }

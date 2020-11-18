@@ -28,8 +28,8 @@ namespace Kint\Renderer;
 use Kint\Object\BasicObject;
 use Kint\Object\InstanceObject;
 
-abstract class Renderer
-{
+abstract class Renderer {
+
     const SORT_NONE = 0;
     const SORT_VISIBILITY = 1;
     const SORT_FULL = 2;
@@ -42,8 +42,7 @@ abstract class Renderer
 
     abstract public function renderNothing();
 
-    public function setCallInfo(array $info)
-    {
+    public function setCallInfo(array $info) {
         if (!isset($info['params'])) {
             $info['params'] = null;
         }
@@ -73,29 +72,24 @@ abstract class Renderer
         );
     }
 
-    public function getCallInfo()
-    {
+    public function getCallInfo() {
         return $this->call_info;
     }
 
-    public function setStatics(array $statics)
-    {
+    public function setStatics(array $statics) {
         $this->statics = $statics;
         $this->setShowTrace(!empty($statics['display_called_from']));
     }
 
-    public function getStatics()
-    {
+    public function getStatics() {
         return $this->statics;
     }
 
-    public function setShowTrace($show_trace)
-    {
+    public function setShowTrace($show_trace) {
         $this->show_trace = $show_trace;
     }
 
-    public function getShowTrace()
-    {
+    public function getShowTrace() {
         return $this->show_trace;
     }
 
@@ -107,8 +101,7 @@ abstract class Renderer
      *
      * @return array Array of hints to class strings filtered and sorted by object hints
      */
-    public function matchPlugins(array $plugins, array $hints)
-    {
+    public function matchPlugins(array $plugins, array $hints) {
         $out = array();
 
         foreach ($hints as $key) {
@@ -120,23 +113,19 @@ abstract class Renderer
         return $out;
     }
 
-    public function filterParserPlugins(array $plugins)
-    {
+    public function filterParserPlugins(array $plugins) {
         return $plugins;
     }
 
-    public function preRender()
-    {
+    public function preRender() {
         return '';
     }
 
-    public function postRender()
-    {
+    public function postRender() {
         return '';
     }
 
-    public static function sortPropertiesFull(BasicObject $a, BasicObject $b)
-    {
+    public static function sortPropertiesFull(BasicObject $a, BasicObject $b) {
         $sort = BasicObject::sortByAccess($a, $b);
         if ($sort) {
             return $sort;
@@ -158,8 +147,7 @@ abstract class Renderer
      *
      * @return BasicObject[]
      */
-    public static function sortProperties(array $contents, $sort)
-    {
+    public static function sortProperties(array $contents, $sort) {
         switch ($sort) {
             case self::SORT_VISIBILITY:
                 /** @var array<array-key, BasicObject[]> Containers to quickly stable sort by type */
@@ -177,9 +165,10 @@ abstract class Renderer
                 return \call_user_func_array('array_merge', $containers);
             case self::SORT_FULL:
                 \usort($contents, array('Kint\\Renderer\\Renderer', 'sortPropertiesFull'));
-                // no break
+            // no break
             default:
                 return $contents;
         }
     }
+
 }

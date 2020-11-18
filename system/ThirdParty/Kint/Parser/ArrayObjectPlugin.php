@@ -28,20 +28,17 @@ namespace Kint\Parser;
 use ArrayObject;
 use Kint\Object\BasicObject;
 
-class ArrayObjectPlugin extends Plugin
-{
-    public function getTypes()
-    {
+class ArrayObjectPlugin extends Plugin {
+
+    public function getTypes() {
         return array('object');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_BEGIN;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (!$var instanceof ArrayObject) {
             return;
         }
@@ -60,4 +57,5 @@ class ArrayObjectPlugin extends Plugin
 
         $this->parser->haltParse();
     }
+
 }

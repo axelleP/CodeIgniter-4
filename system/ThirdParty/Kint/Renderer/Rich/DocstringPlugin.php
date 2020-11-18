@@ -29,10 +29,9 @@ use Kint\Kint;
 use Kint\Object\Representation\DocstringRepresentation;
 use Kint\Object\Representation\Representation;
 
-class DocstringPlugin extends Plugin implements TabPluginInterface
-{
-    public function renderTab(Representation $r)
-    {
+class DocstringPlugin extends Plugin implements TabPluginInterface {
+
+    public function renderTab(Representation $r) {
         if (!($r instanceof DocstringRepresentation)) {
             return false;
         }
@@ -47,10 +46,10 @@ class DocstringPlugin extends Plugin implements TabPluginInterface
         $location = array();
 
         if ($r->class) {
-            $location[] = 'Inherited from '.$this->renderer->escape($r->class);
+            $location[] = 'Inherited from ' . $this->renderer->escape($r->class);
         }
         if ($r->file && $r->line) {
-            $location[] = 'Defined in '.$this->renderer->escape(Kint::shortenPath($r->file)).':'.((int) $r->line);
+            $location[] = 'Defined in ' . $this->renderer->escape(Kint::shortenPath($r->file)) . ':' . ((int) $r->line);
         }
 
         $location = \implode("\n", $location);
@@ -60,11 +59,12 @@ class DocstringPlugin extends Plugin implements TabPluginInterface
                 $docstring .= "\n\n";
             }
 
-            $location = '<small>'.$location.'</small>';
+            $location = '<small>' . $location . '</small>';
         } elseif (0 === \strlen($docstring)) {
             return '';
         }
 
-        return '<pre>'.$this->renderer->escape($docstring).$location.'</pre>';
+        return '<pre>' . $this->renderer->escape($docstring) . $location . '</pre>';
     }
+
 }

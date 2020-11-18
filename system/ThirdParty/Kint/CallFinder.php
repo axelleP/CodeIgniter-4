@@ -25,8 +25,8 @@
 
 namespace Kint;
 
-class CallFinder
-{
+class CallFinder {
+
     private static $ignore = array(
         T_CLOSE_TAG => true,
         T_COMMENT => true,
@@ -101,7 +101,6 @@ class CallFinder
         '|' => true,
         '~' => true,
     );
-
     private static $strip = array(
         '(' => true,
         ')' => true,
@@ -114,8 +113,7 @@ class CallFinder
         T_NS_SEPARATOR => true,
     );
 
-    public static function getFunctionCalls($source, $line, $function)
-    {
+    public static function getFunctionCalls($source, $line, $function) {
         static $up = array(
             '(' => true,
             '[' => true,
@@ -225,7 +223,6 @@ class CallFinder
             $params = array(); // All our collected parameters
             $shortparam = array(); // The short version of the parameter
             $param_start = $offset; // The distance to the start of the parameter
-
             // Loop through the following tokens until the function call ends
             while (isset($tokens[$offset])) {
                 $token = $tokens[$offset];
@@ -284,7 +281,7 @@ class CallFinder
                         $paramrealtokens = false;
                         $param_start = $offset + 1;
                     } elseif (T_CONSTANT_ENCAPSED_STRING === $token[0] && \strlen($token[1]) > 2) {
-                        $shortparam[] = $token[1][0].'...'.$token[1][0];
+                        $shortparam[] = $token[1][0] . '...' . $token[1][0];
                     } else {
                         $shortparam[] = $token;
                     }
@@ -366,8 +363,7 @@ class CallFinder
         return $function_calls;
     }
 
-    private static function realTokenIndex(array $tokens, $index)
-    {
+    private static function realTokenIndex(array $tokens, $index) {
         ++$index;
 
         while (isset($tokens[$index])) {
@@ -390,13 +386,11 @@ class CallFinder
      *
      * @return bool
      */
-    private static function tokenIsOperator($token)
-    {
+    private static function tokenIsOperator($token) {
         return '...' !== $token && isset(self::$operator[$token[0]]);
     }
 
-    private static function tokensToString(array $tokens)
-    {
+    private static function tokensToString(array $tokens) {
         $out = '';
 
         foreach ($tokens as $token) {
@@ -410,8 +404,7 @@ class CallFinder
         return $out;
     }
 
-    private static function tokensTrim(array $tokens)
-    {
+    private static function tokensTrim(array $tokens) {
         foreach ($tokens as $index => $token) {
             if (isset(self::$ignore[$token[0]])) {
                 unset($tokens[$index]);
@@ -433,8 +426,7 @@ class CallFinder
         return \array_reverse($tokens);
     }
 
-    private static function tokensFormatted(array $tokens)
-    {
+    private static function tokensFormatted(array $tokens) {
         $space = false;
 
         $tokens = self::tokensTrim($tokens);
@@ -470,4 +462,5 @@ class CallFinder
 
         return $output;
     }
+
 }

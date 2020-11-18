@@ -27,18 +27,16 @@ namespace Kint\Object;
 
 use Kint\Kint;
 
-class StreamObject extends ResourceObject
-{
+class StreamObject extends ResourceObject {
+
     public $stream_meta;
 
-    public function __construct(array $meta = null)
-    {
+    public function __construct(array $meta = null) {
         parent::__construct();
         $this->stream_meta = $meta;
     }
 
-    public function getValueShort()
-    {
+    public function getValueShort() {
         if (empty($this->stream_meta['uri'])) {
             return;
         }
@@ -51,4 +49,5 @@ class StreamObject extends ResourceObject
 
         return $uri;
     }
+
 }

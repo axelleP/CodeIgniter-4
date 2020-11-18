@@ -27,8 +27,8 @@ namespace Kint\Parser;
 
 use Kint\Object\BasicObject;
 
-class TimestampPlugin extends Plugin
-{
+class TimestampPlugin extends Plugin {
+
     public static $blacklist = array(
         2147483648,
         2147483647,
@@ -36,18 +36,15 @@ class TimestampPlugin extends Plugin
         1073741823,
     );
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('string', 'integer');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (\is_string($var) && !\ctype_digit($var)) {
             return;
         }
@@ -68,4 +65,5 @@ class TimestampPlugin extends Plugin
             $o->value->hints[] = 'timestamp';
         }
     }
+
 }

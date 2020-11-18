@@ -42,12 +42,13 @@ namespace CodeIgniter\Router\Exceptions;
 /**
  * RedirectException
  */
-class RedirectException extends \Exception
-{
-	/**
-	 * Status code for redirects
-	 *
-	 * @var integer
-	 */
-	protected $code = 302;
+class RedirectException extends \Exception {
+
+    /**
+     * Status code for redirects
+     *
+     * @var integer
+     */
+    protected $code = 302;
+
 }

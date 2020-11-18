@@ -29,8 +29,8 @@ use Kint\Object\BasicObject;
 use Kint\Object\Representation\Representation;
 use Traversable;
 
-class IteratorPlugin extends Plugin
-{
+class IteratorPlugin extends Plugin {
+
     /**
      * List of classes and interfaces to blacklist.
      *
@@ -48,18 +48,15 @@ class IteratorPlugin extends Plugin
         'SplFileObject',
     );
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('object');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (!$var instanceof Traversable) {
             return;
         }
@@ -67,8 +64,8 @@ class IteratorPlugin extends Plugin
         foreach (self::$blacklist as $class) {
             if ($var instanceof $class) {
                 $b = new BasicObject();
-                $b->name = $class.' Iterator Contents';
-                $b->access_path = 'iterator_to_array('.$o->access_path.', true)';
+                $b->name = $class . ' Iterator Contents';
+                $b->access_path = 'iterator_to_array(' . $o->access_path . ', true)';
                 $b->depth = $o->depth + 1;
                 $b->hints[] = 'blacklist';
 
@@ -92,7 +89,7 @@ class IteratorPlugin extends Plugin
         $base_obj->depth = $o->depth;
 
         if ($o->access_path) {
-            $base_obj->access_path = 'iterator_to_array('.$o->access_path.')';
+            $base_obj->access_path = 'iterator_to_array(' . $o->access_path . ')';
         }
 
         $r = new Representation('Iterator');
@@ -107,4 +104,5 @@ class IteratorPlugin extends Plugin
             $o->addRepresentation($r);
         }
     }
+
 }

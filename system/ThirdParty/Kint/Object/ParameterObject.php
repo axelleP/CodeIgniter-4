@@ -29,15 +29,14 @@ use Kint\Utils;
 use ReflectionException;
 use ReflectionParameter;
 
-class ParameterObject extends BasicObject
-{
+class ParameterObject extends BasicObject {
+
     public $type_hint;
     public $default;
     public $position;
     public $hints = array('parameter');
 
-    public function __construct(ReflectionParameter $param)
-    {
+    public function __construct(ReflectionParameter $param) {
         parent::__construct();
 
         if (KINT_PHP70) {
@@ -83,18 +82,16 @@ class ParameterObject extends BasicObject
         }
     }
 
-    public function getType()
-    {
+    public function getType() {
         return $this->type_hint;
     }
 
-    public function getName()
-    {
-        return '$'.$this->name;
+    public function getName() {
+        return '$' . $this->name;
     }
 
-    public function getDefault()
-    {
+    public function getDefault() {
         return $this->default;
     }
+
 }

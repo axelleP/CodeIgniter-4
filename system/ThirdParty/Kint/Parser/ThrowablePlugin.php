@@ -31,20 +31,17 @@ use Kint\Object\Representation\SourceRepresentation;
 use Kint\Object\ThrowableObject;
 use Throwable;
 
-class ThrowablePlugin extends Plugin
-{
-    public function getTypes()
-    {
+class ThrowablePlugin extends Plugin {
+
+    public function getTypes() {
         return array('object');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (!$var instanceof Exception && (!KINT_PHP70 || !$var instanceof Throwable)) {
             return;
         }
@@ -57,4 +54,5 @@ class ThrowablePlugin extends Plugin
 
         $o = $throw;
     }
+
 }

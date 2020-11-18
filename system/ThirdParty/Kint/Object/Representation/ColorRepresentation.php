@@ -27,8 +27,8 @@ namespace Kint\Object\Representation;
 
 use InvalidArgumentException;
 
-class ColorRepresentation extends Representation
-{
+class ColorRepresentation extends Representation {
+
     const COLOR_NAME = 1;
     const COLOR_HEX_3 = 2;
     const COLOR_HEX_6 = 3;
@@ -192,7 +192,6 @@ class ColorRepresentation extends Representation
         'yellow' => 'ffff00',
         'yellowgreen' => '9acd32',
     );
-
     public $r = 0;
     public $g = 0;
     public $b = 0;
@@ -201,16 +200,14 @@ class ColorRepresentation extends Representation
     public $implicit_label = true;
     public $hints = array('color');
 
-    public function __construct($value)
-    {
+    public function __construct($value) {
         parent::__construct('Color');
 
         $this->contents = $value;
         $this->setValues($value);
     }
 
-    public function getColor($variant = null)
-    {
+    public function getColor($variant = null) {
         if (!$variant) {
             $variant = $this->variant;
         }
@@ -221,13 +218,10 @@ class ColorRepresentation extends Representation
                 $hex_alpha = \sprintf('%02x%02x%02x%02x', $this->r, $this->g, $this->b, \round($this->a * 0xFF));
 
                 return \array_search($hex, self::$color_map, true) ?: \array_search($hex_alpha, self::$color_map, true);
-           case self::COLOR_HEX_3:
+            case self::COLOR_HEX_3:
                 if (0 === $this->r % 0x11 && 0 === $this->g % 0x11 && 0 === $this->b % 0x11) {
                     return \sprintf(
-                        '#%1X%1X%1X',
-                        \round($this->r / 0x11),
-                        \round($this->g / 0x11),
-                        \round($this->b / 0x11)
+                            '#%1X%1X%1X', \round($this->r / 0x11), \round($this->g / 0x11), \round($this->b / 0x11)
                     );
                 }
 
@@ -256,11 +250,7 @@ class ColorRepresentation extends Representation
             case self::COLOR_HEX_4:
                 if (0 === $this->r % 0x11 && 0 === $this->g % 0x11 && 0 === $this->b % 0x11 && 0 === ($this->a * 255) % 0x11) {
                     return \sprintf(
-                        '#%1X%1X%1X%1X',
-                        \round($this->r / 0x11),
-                        \round($this->g / 0x11),
-                        \round($this->b / 0x11),
-                        \round($this->a * 0xF)
+                            '#%1X%1X%1X%1X', \round($this->r / 0x11), \round($this->g / 0x11), \round($this->b / 0x11), \round($this->a * 0xF)
                     );
                 }
 
@@ -273,8 +263,7 @@ class ColorRepresentation extends Representation
         return false;
     }
 
-    public function hasAlpha($variant = null)
-    {
+    public function hasAlpha($variant = null) {
         if (null === $variant) {
             $variant = $this->variant;
         }
@@ -294,8 +283,7 @@ class ColorRepresentation extends Representation
         }
     }
 
-    protected function setValues($value)
-    {
+    protected function setValues($value) {
         $value = \strtolower(\trim($value));
         // Find out which variant of color input it is
         if (isset(self::$color_map[$value])) {
@@ -330,8 +318,7 @@ class ColorRepresentation extends Representation
         }
     }
 
-    protected function setValuesFromHex($hex)
-    {
+    protected function setValuesFromHex($hex) {
         if (!\ctype_xdigit($hex)) {
             return null;
         }
@@ -356,7 +343,7 @@ class ColorRepresentation extends Representation
         switch ($variant) {
             case self::COLOR_HEX_4:
                 $this->a = \hexdec($hex[3]) / 0xF;
-                // no break
+            // no break
             case self::COLOR_HEX_3:
                 $this->r = \hexdec($hex[0]) * 0x11;
                 $this->g = \hexdec($hex[1]) * 0x11;
@@ -364,7 +351,7 @@ class ColorRepresentation extends Representation
                 break;
             case self::COLOR_HEX_8:
                 $this->a = \hexdec(\substr($hex, 6, 2)) / 0xFF;
-                // no break
+            // no break
             case self::COLOR_HEX_6:
                 $hex = \str_split($hex, 2);
                 $this->r = \hexdec($hex[0]);
@@ -376,8 +363,7 @@ class ColorRepresentation extends Representation
         return $variant;
     }
 
-    protected function setValuesFromFunction($value)
-    {
+    protected function setValuesFromFunction($value) {
         if (!\preg_match('/^((?:rgb|hsl)a?)\\s*\\(([0-9\\.%,\\s\\/\\-]+)\\)$/i', $value, $match)) {
             return null;
         }
@@ -469,8 +455,7 @@ class ColorRepresentation extends Representation
      *
      * @return int[] RGB array
      */
-    public static function hslToRgb($h, $s, $l)
-    {
+    public static function hslToRgb($h, $s, $l) {
         if (\min($h, $s, $l) < 0) {
             throw new InvalidArgumentException('The parameters for hslToRgb should be no less than 0');
         }
@@ -502,8 +487,7 @@ class ColorRepresentation extends Representation
      *
      * @return float[] HSL array
      */
-    public static function rgbToHsl($red, $green, $blue)
-    {
+    public static function rgbToHsl($red, $green, $blue) {
         if (\min($red, $green, $blue) < 0) {
             throw new InvalidArgumentException('The parameters for rgbToHsl should be no less than 0');
         }
@@ -558,8 +542,7 @@ class ColorRepresentation extends Representation
      *
      * @return float Color value
      */
-    private static function hueToRgb($m1, $m2, $hue)
-    {
+    private static function hueToRgb($m1, $m2, $hue) {
         $hue = ($hue < 0) ? $hue + 1 : (($hue > 1) ? $hue - 1 : $hue);
         if ($hue * 6 < 1) {
             return $m1 + ($m2 - $m1) * $hue * 6;
@@ -573,4 +556,5 @@ class ColorRepresentation extends Representation
 
         return $m1;
     }
+
 }

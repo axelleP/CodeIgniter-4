@@ -28,8 +28,8 @@ namespace Kint\Parser;
 use Kint\Object\BasicObject;
 use Kint\Object\Representation\Representation;
 
-class SerializePlugin extends Plugin
-{
+class SerializePlugin extends Plugin {
+
     /**
      * Disables automatic unserialization on arrays and objects.
      *
@@ -47,18 +47,15 @@ class SerializePlugin extends Plugin
     public static $safe_mode = true;
     public static $options = array(true);
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('string');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         $trimmed = \rtrim($var);
 
         if ('N;' !== $trimmed && !\preg_match('/^(?:[COabis]:\\d+[:;]|d:\\d+(?:\\.\\d+);)/', $trimmed)) {
@@ -81,10 +78,10 @@ class SerializePlugin extends Plugin
 
         $base_obj = new BasicObject();
         $base_obj->depth = $o->depth + 1;
-        $base_obj->name = 'unserialize('.$o->name.')';
+        $base_obj->name = 'unserialize(' . $o->name . ')';
 
         if ($o->access_path) {
-            $base_obj->access_path = 'unserialize('.$o->access_path;
+            $base_obj->access_path = 'unserialize(' . $o->access_path;
             if (!KINT_PHP70 || self::$options === array(true)) {
                 $base_obj->access_path .= ')';
             } elseif (self::$options === array(false)) {
@@ -105,4 +102,5 @@ class SerializePlugin extends Plugin
 
         $o->addRepresentation($r, 0);
     }
+
 }

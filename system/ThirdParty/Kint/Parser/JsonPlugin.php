@@ -28,20 +28,17 @@ namespace Kint\Parser;
 use Kint\Object\BasicObject;
 use Kint\Object\Representation\Representation;
 
-class JsonPlugin extends Plugin
-{
-    public function getTypes()
-    {
+class JsonPlugin extends Plugin {
+
+    public function getTypes() {
         return array('string');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (!isset($var[0]) || ('{' !== $var[0] && '[' !== $var[0])) {
             return;
         }
@@ -58,7 +55,7 @@ class JsonPlugin extends Plugin
         $base_obj->depth = $o->depth;
 
         if ($o->access_path) {
-            $base_obj->access_path = 'json_decode('.$o->access_path.', true)';
+            $base_obj->access_path = 'json_decode(' . $o->access_path . ', true)';
         }
 
         $r = new Representation('Json');
@@ -70,4 +67,5 @@ class JsonPlugin extends Plugin
 
         $o->addRepresentation($r, 0);
     }
+
 }

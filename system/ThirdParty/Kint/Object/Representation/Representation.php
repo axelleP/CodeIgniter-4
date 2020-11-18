@@ -25,17 +25,15 @@
 
 namespace Kint\Object\Representation;
 
-class Representation
-{
+class Representation {
+
     public $label;
     public $implicit_label = false;
     public $hints = array();
     public $contents = array();
-
     protected $name;
 
-    public function __construct($label, $name = null)
-    {
+    public function __construct($label, $name = null) {
         $this->label = $label;
 
         if (null === $name) {
@@ -45,27 +43,24 @@ class Representation
         $this->setName($name);
     }
 
-    public function getLabel()
-    {
+    public function getLabel() {
         if (\is_array($this->contents) && \count($this->contents) > 1) {
-            return $this->label.' ('.\count($this->contents).')';
+            return $this->label . ' (' . \count($this->contents) . ')';
         }
 
         return $this->label;
     }
 
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = \preg_replace('/[^a-z0-9]+/', '_', \strtolower($name));
     }
 
-    public function labelIsImplicit()
-    {
+    public function labelIsImplicit() {
         return $this->implicit_label;
     }
+
 }

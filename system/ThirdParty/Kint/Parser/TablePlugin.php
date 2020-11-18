@@ -28,20 +28,17 @@ namespace Kint\Parser;
 use Kint\Object\BasicObject;
 use Kint\Object\Representation\Representation;
 
-class TablePlugin extends Plugin
-{
-    public function getTypes()
-    {
+class TablePlugin extends Plugin {
+
+    public function getTypes() {
         return array('array');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (empty($o->value->contents)) {
             return;
         }
@@ -84,4 +81,5 @@ class TablePlugin extends Plugin
         $table->hints[] = 'table';
         $o->addRepresentation($table, 0);
     }
+
 }

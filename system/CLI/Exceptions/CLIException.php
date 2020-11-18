@@ -42,19 +42,19 @@ namespace CodeIgniter\CLI\Exceptions;
 /**
  * CLIException
  */
-class CLIException extends \RuntimeException
-{
-	/**
-	 * Thrown when `$color` specified for `$type` is not within the
-	 * allowed list of colors.
-	 *
-	 * @param string $type
-	 * @param string $color
-	 *
-	 * @return \CodeIgniter\CLI\Exceptions\CLIException
-	 */
-	public static function forInvalidColor(string $type, string $color)
-	{
-		return new static(lang('CLI.invalidColor', [$type, $color]));
-	}
+class CLIException extends \RuntimeException {
+
+    /**
+     * Thrown when `$color` specified for `$type` is not within the
+     * allowed list of colors.
+     *
+     * @param string $type
+     * @param string $color
+     *
+     * @return \CodeIgniter\CLI\Exceptions\CLIException
+     */
+    public static function forInvalidColor(string $type, string $color) {
+        return new static(lang('CLI.invalidColor', [$type, $color]));
+    }
+
 }

@@ -6,11 +6,11 @@
         </tr>
     </thead>
     <tbody>
-    {queries}
+        {queries}
         <tr>
             <td class="narrow">{duration}</td>
             <td>{! sql !}</td>
         </tr>
-    {/queries}
+        {/queries}
     </tbody>
 </table>

@@ -27,12 +27,11 @@ namespace Kint\Parser;
 
 use Kint\Object\BasicObject;
 
-abstract class Plugin
-{
+abstract class Plugin {
+
     protected $parser;
 
-    public function setParser(Parser $p)
-    {
+    public function setParser(Parser $p) {
         $this->parser = $p;
     }
 
@@ -41,13 +40,11 @@ abstract class Plugin
      *
      * @return array List of types
      */
-    public function getTypes()
-    {
+    public function getTypes() {
         return array();
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_NONE;
     }
 

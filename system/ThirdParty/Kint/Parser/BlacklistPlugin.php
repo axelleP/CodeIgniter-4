@@ -28,8 +28,8 @@ namespace Kint\Parser;
 use Kint\Object\BasicObject;
 use Kint\Object\InstanceObject;
 
-class BlacklistPlugin extends Plugin
-{
+class BlacklistPlugin extends Plugin {
+
     /**
      * List of classes and interfaces to blacklist.
      *
@@ -58,18 +58,15 @@ class BlacklistPlugin extends Plugin
      */
     public static $shallow_array_limit = 1000;
 
-    public function getTypes()
-    {
+    public function getTypes() {
         return array('object', 'array');
     }
 
-    public function getTriggers()
-    {
+    public function getTriggers() {
         return Parser::TRIGGER_BEGIN;
     }
 
-    public function parse(&$var, BasicObject &$o, $trigger)
-    {
+    public function parse(&$var, BasicObject &$o, $trigger) {
         if (\is_object($var)) {
             return $this->parseObject($var, $o);
         }
@@ -78,8 +75,7 @@ class BlacklistPlugin extends Plugin
         }
     }
 
-    protected function parseObject(&$var, BasicObject &$o)
-    {
+    protected function parseObject(&$var, BasicObject &$o) {
         foreach (self::$blacklist as $class) {
             if ($var instanceof $class) {
                 return $this->blacklistObject($var, $o);
@@ -97,8 +93,7 @@ class BlacklistPlugin extends Plugin
         }
     }
 
-    protected function blacklistObject(&$var, BasicObject &$o)
-    {
+    protected function blacklistObject(&$var, BasicObject &$o) {
         $object = new InstanceObject();
         $object->transplant($o);
         $object->classname = \get_class($var);
@@ -113,8 +108,7 @@ class BlacklistPlugin extends Plugin
         $this->parser->haltParse();
     }
 
-    protected function parseArray(array &$var, BasicObject &$o)
-    {
+    protected function parseArray(array &$var, BasicObject &$o) {
         if (\count($var) > self::$array_limit) {
             return $this->blacklistArray($var, $o);
         }
@@ -128,8 +122,7 @@ class BlacklistPlugin extends Plugin
         }
     }
 
-    protected function blacklistArray(array &$var, BasicObject &$o)
-    {
+    protected function blacklistArray(array &$var, BasicObject &$o) {
         $object = new BasicObject();
         $object->transplant($o);
         $object->value = null;
@@ -140,4 +133,5 @@ class BlacklistPlugin extends Plugin
 
         $this->parser->haltParse();
     }
+
 }
