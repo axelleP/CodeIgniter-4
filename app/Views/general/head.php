@@ -3,6 +3,7 @@
 <meta name="description" content="CodeIgniter 4 training">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon" type="image/png" href="/favicon.ico"/>
+<link rel="stylesheet" href="<?php echo base_url('css/style.css') ?>" type="text/css">
 <link rel="stylesheet" href="<?php echo base_url('css/bootstrap/bootstrap.min.css') ?>" type="text/css">
 <!-- il faut télécharger jquery avant bootstrap -->
 <script
