@@ -1,7 +1,7 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('content') ?>
-<?= form_button('addArticle', 'Ajouter un article', 'class="btn btn-primary"'); ?>
+<a href="<?= site_url('homeController/addArticle') ?>" class="btn btn-primary">Ajouter un article</a>
 
 <div class="row row-cols-1 row-cols-md-3 my-5">
     <?php
