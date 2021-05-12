@@ -1,0 +1,14 @@
+.btn-close {
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+button.btn-close:hover  {
+    color: #DCDCDC;
+}
+button.btn-close:focus  {
+    outline:none;/* arrête d'afficher une bordure quand on enlève la souris de la croix */
+}

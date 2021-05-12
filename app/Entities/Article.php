@@ -12,6 +12,7 @@ class Article extends Entity {
         'a_description' => '',
         'a_prix' => '',
         'a_quantite' => '',
+        'a_image' => '',
     ];
 
     public function __construct(array $data = null) {
