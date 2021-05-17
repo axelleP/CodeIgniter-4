@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-class HomeController extends BaseController {
+class ArticleController extends BaseController {
 
-    protected $helpers = ['form', 'html'];
+    protected $helpers = ['form', 'html', 'number'];
 
     public function initController(\CodeIgniter\HTTP\RequestInterface $request, \CodeIgniter\HTTP\ResponseInterface $response, \Psr\Log\LoggerInterface $logger) {
         parent::initController($request, $response, $logger);
@@ -13,14 +13,14 @@ class HomeController extends BaseController {
         $this->post = $this->request->getPost();
     }
 
-    public function index() {
+    public function showList() {
         $articles = $this->modeleArticle->findAll();
         return view('articles/list', ['articles' => $articles]);
     }
 
-    public function addArticle() {
+    public function showForm() {
         if (isset($this->post['btnAnnuler'])) {
-            return redirect()->to('/homeController/index');
+            return redirect()->to('/ArticleController/showList');
         }
 
         $article = new \App\Entities\Article();
@@ -38,7 +38,7 @@ class HomeController extends BaseController {
             }
 
             if ($this->modeleArticle->insert($article)) {
-                return $this->index();
+                return $this->showList();
             } else {
                 $errors = $this->modeleArticle->errors();
             }
@@ -47,7 +47,7 @@ class HomeController extends BaseController {
         return view('articles/form', ['article' => $article, 'errors' => $errors]);
     }
 
-    public function deleteArticle() {
+    public function delete() {
         $tableArticle = $this->db->table('article');
         $query = $tableArticle->select('a_image')
                 ->where('a_id', $this->post['id'])

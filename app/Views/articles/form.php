@@ -6,7 +6,7 @@
 
 <?php
 //multipart/form-data pour l'input image
-echo form_open('homeController/addArticle', ['enctype' => 'multipart/form-data']);
+echo form_open('formulaire', ['enctype' => 'multipart/form-data']);
 
 echo form_label('Nom', 'a_nom');
 echo form_input('article[a_nom]', (!empty($article->a_nom)) ? $article->a_nom : '', 'class="form-control"');

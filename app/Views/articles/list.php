@@ -1,27 +1,30 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('content') ?>
-<a href="<?= site_url('homeController/addArticle') ?>" class="btn btn-primary">Ajouter un article</a>
+<a href="<?= base_url('formulaire') ?>" class="btn btn-primary">Ajouter un article</a>
 
-<div class="row row-cols-1 row-cols-md-3 my-5">
+<div class="row row-cols-2 row-cols-md-4 my-5">
     <?php
     foreach ($articles as $article) {
         ?>
         <div id="<?= $article->a_id ?>" class="col mb-4">
-            <div class="card h-100">
+            <div class="card h-100 vignette">
                 <div class="position-relative p-1">
                     <button type="button" class="btn-close" aria-label="Close" onclick="js:confirmDeleteArticle(<?= $article->a_id ?>);"><span >&times;</span></button>
                 </div>
 
-                <?=
-                img(['src' => 'img/' . $article->a_image,
-                    'alt' => 'alt test',
-                    'class' => 'card-img-top img-thumbnail img-fluid']);
-                ?>
+                <!-- embed-responsive embed-responsive-4by3 et embed-responsive-item pour définir la taille de l'image et mettre en responsive design -->
+                <div class="embed-responsive embed-responsive-4by3">
+                    <?=
+                    img(['src' => 'img/' . $article->a_image,
+                        'alt' => 'alt test',
+                        'class' => 'card-img-top img-thumbnail img-fluid embed-responsive-item']);
+                    ?>
+                </div>
 
                 <div class="card-body">
                     <h5 class="card-title"><?= $article->a_nom; ?></h5>
-                    <p class="card-text"><?= $article->a_description; ?></p>
+                    <span class="card-prix"><?= number_to_currency($article->a_prix, 'EUR'); ?></span>
                 </div>
             </div>
         </div>
@@ -45,7 +48,7 @@
 
     function deleteArticle(id) {
         $.ajax({
-            url: '<?= base_url() ?>/HomeController/deleteArticle',//fonction PHP appelée
+            url: '<?= base_url() ?>/ArticleController/delete',//fonction PHP appelée
             data: 'id=' + id,//donnée envoyé
             type: 'POST',//type d'envoi
             dataType: 'json'//type des données récupérées
