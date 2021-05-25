@@ -1,3 +1,11 @@
+# Training
+I used :
+- CodeIgniter 4.0.4
+- jQuery 3.5.1
+- jQuery UI 1.12.1
+- Boostrap 4.5.3
+- CVarDumper
+
 # CodeIgniter 4 Framework
 
 ## What is CodeIgniter?
