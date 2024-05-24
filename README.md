@@ -1,4 +1,4 @@
-# <h1 align="center">👨‍💻 Entraînement CodeIgniter 4 👩‍💻</h1>
+# <h1 align="center">👨‍💻 CodeIgniter 4 👩‍💻</h1>
 
 </br>
 
